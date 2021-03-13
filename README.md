@@ -15,5 +15,7 @@ For project normal work add:
 3) Your VKontakte ClientId and ClientSecret in PchelaMap/Startup.cs 86,87 str
 
 Home page must look like this:
+
 <img src="MainPage.png"/>
+
 There are not much comments in the code and they are in Russian. Will be corrected soon.
