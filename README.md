@@ -19,3 +19,4 @@ Home page must look like this:
 <img src="MainPage.png"/>
 
 There are not much comments in the code and they are in Russian. Will be corrected soon.
+Loaded for portfolio.
