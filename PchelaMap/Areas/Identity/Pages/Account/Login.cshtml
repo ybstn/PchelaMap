@@ -1,0 +1,72 @@
+@page
+@model LoginModel
+
+@{ ViewData["Title"] = "ВХОД НА САЙТ"; }
+
+<div class="MainPanel">
+    <div class="MainHeader">@ViewData["Title"]</div>
+    <div class="col-md-12">
+        <section>
+            @{
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div class="row Disclaimer" style="justify-content:center; align-items:center;">
+                                    <label for="UserPrivacyConfirm" class="PrivacyCheckBoxLabel TextDiv">
+                                        СОГЛАСИЕ С ПОЛИТИКОЙ В ОТНОШЕНИИ ПЕРСОНАЛЬНЫХ ДАННЫХ:
+                                        <input type="checkbox" id="UserPrivacyConfirm"
+                                               name="UserPrivacyConfirm" class="PrivacyCheckBox"
+                                               checked="checked" required />
+                                    </label>
+                                    <a class="TextDiv" asp-controller="Home" asp-action="Policy">
+                                        ПОЛИТИКА В ОТНОШЕНИИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ
+                                    </a>
+                                </div>
+                                <div class="TextDivBold">ВЫБЕРИТЕ СОЦИАЛЬНУЮ СЕТЬ ДЛЯ ВХОДА:</div>
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins)
+                                        {
+                            <button type="submit" class="btn btn-primary ExternalLoginsButton" name="provider" value="@provider.Name" title="Войти, используя @provider.DisplayName account">@provider.DisplayName</button>}
+                                    </p>
+                                </div>
+                            </form> }
+        </section>
+        <div class="row Disclaimer" style="text-align:left;">
+            <div class="TextDivBold">
+                ВНИМАНИЕ! Получать волонтерскую (вещевую/продуктовую) помощь на карте «Пчела» могут только следующие категории нуждающихся:
+                <ul class="TextList">
+                    <li>
+                        беременные женщины;
+                    </li>
+                    <li>
+                        матери одиночки;
+                    </li>
+                    <li>
+                        многодетные матери;
+                    </li>
+                    <li>
+                        матери детей с патологиями развития, детей инвалидов;
+                        официально удостоверившие свой статус предоставлением соответствующего документа, как основания к оказанию помощи:
+                        <ul class="TextSubList">
+                            <li>
+                                справка о получении/выплате о пособий;
+                            </li>
+                            <li>
+                                справка о малоимущей семье.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                Заявки от других категорий женщин не принимаются к рассмотрению модератором.
+            </div>
+        </div>
+    </div>
+</div>
+@section csss
+{
+    <link type="text/css" rel="stylesheet" href="~/css/Register.css" />
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+}
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

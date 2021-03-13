@@ -1,0 +1,159 @@
+/* Edit profile View part START */
+main
+{
+  background-color:white;
+  position: relative;
+  background-image: url('../../Images/TextPageBackgound.png');
+  background-size: cover;
+}
+.userProfileSettingsAvatar
+{
+  margin-right: 0;
+  margin-bottom: 1vh;
+  border-radius: 5px;
+  width: 100%;
+  height: 17vw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  cursor: pointer;
+  
+}
+
+.userProfileSettingsAvatar:hover ~ .inputFileLabel
+{
+  background-color: white;
+  color: rgba(255, 102, 114, 1);
+  border-color: lightgray;
+}
+.inputFile
+{
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}
+.inputFileLabel
+{
+  margin: 0;
+  border-radius: 13px;
+  min-width: 12vw;
+  padding: 0.8vw 2vw;
+  pointer-events: all;
+  cursor: pointer;
+  white-space: pre-line;
+  text-transform: uppercase;
+  border-width: 0.3vw;
+  border-style: solid;
+}
+.inputFileLabel:hover
+{
+  text-decoration: none;
+  background-color: white;
+  color: rgba(255, 102, 114, 1);
+}
+.UserLocationMapContainer
+{
+  width:100%;
+  height:56vh;
+}
+
+
+.CloseEditProfileButton
+{
+    top:1vh;
+    right:1vw;
+    position: absolute;
+}
+.EditProfileButton
+{
+    margin: 1vh 1vw 0 1vw;
+text-transform: uppercase;
+  border-radius: 13px;
+  min-width: 12vw;
+  padding: 0.8vw 2vw;
+  pointer-events: all;
+  border-width: 0.3vw;
+  border-style: solid;
+}
+.EditProfileButton:hover
+{
+  text-decoration: none;
+}
+.ProfileHeaderLabel
+{
+  background-color: white;
+    border-bottom:1px solid #dee2e6; 
+    padding:1rem 1rem;
+    /* font-size: 1rem; */
+}
+.EditProfileTextInput, .UserAdress
+{
+font-size: 1.2rem;
+}
+/* Edit profile View part END */
+@media screen and (max-width:800px){
+  
+  
+  /* Edit profile View part START */
+  .EditProfileButton
+  {
+    padding: 2vw 2vw;
+  }
+  .EditProfileTextInput, .UserAdress
+{
+font-size: 1.2rem;
+}
+  /* Edit profile View part END */
+  
+  }
+  @media screen and (max-width:480px){
+   
+  
+  /* Edit profile View part START */
+
+  .EditProfileButton
+  {
+    width: 30%;
+    padding: 1vw 2vw;
+  }
+  .userProfileSettingsAvatar
+  {
+    height:34vh;
+  }
+  .inputFileLabel
+  {
+    padding: 3vw 2vw;
+  }
+  .UserLocationMapContainer
+  {
+    height:36vh;
+  }
+ 
+  .CloseEditProfileButton
+  {
+      top:-0;
+      right:1.5vw;
+      font-size: 1rem;
+  }
+  .ProfileHeaderLabel
+{
+    padding:0.2rem 1rem;
+    font-size: 1rem;
+}
+.UserAdress
+{
+  font-size: 1rem;
+}
+.EditProfileTextInput
+{
+font-size: 1rem;
+}
+  .UserLocationMapContainer
+  {
+  
+  }
+  /* Edit profile View part END */
+  
+  }

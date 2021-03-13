@@ -1,0 +1,87 @@
+﻿@{ ViewData["Title"] = "Home Page"; }
+
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model MainPageClass
+<link rel="stylesheet" href="~/css/Main.css" />
+<div id="TaskModDialog" class="modal modal-wide fade" role="dialog">
+    <div id="TaskModContent" class="modal-dialog modal-dialog-centered" role="document"></div>
+</div>
+@*<div class="NYcontainer">
+    <a class="NYLink" style="text-decoration:none;" asp-area="" asp-controller="Home" asp-action="NY_Page">
+        <img class="NYimage" src="~/Images/NYbutton.jpeg" />
+        <div class="NYButton">
+            <img class="NYButtonImage" src="~/Images/NYtextButt.png" />
+        </div>
+    </a>
+</div>*@
+
+<div id="map" class="MapContainer"></div>
+
+<div class="StatusContainer">
+    <div id="TaskUserselectorContainer" class="TaskUserselectorContainer">
+
+        <div class="ShowOnlyButtonOff" id="ShowOnlyTasks">
+            <span>Заявок:</span>
+            <span>@Model.TasksCount</span>
+        </div>
+        <div class="ShowOnlyButtonOff" id="ShowAll">
+            <span>Добровольцев:</span>
+            <span>@Model.UsersCount</span>
+        </div>
+
+    </div>
+    <partial name="_ClientStatusMessage" model="@Model.ModalData" />
+</div>
+<div id="TaskUserAddButtonsContainer" class="MainBottomButtonsContainer">
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var UserData = UserManager.GetUserAsync(User).Result;
+        if ((UserData.UserAdress == null || UserData.UserAdress == "") || UserData.PhoneNumber == null || !UserData.EmailConfirmed)
+        {
+            <a style="text-decoration:none;" asp-area="Identity" asp-page="/Account/Manage/Index">
+                <input type="button" class="btn btn-warning btn-lg MainCanHelpButton" value="Заполните профиль" />
+            </a>
+        }
+        else
+        {
+            <input type="hidden" id="UserID" value="@UserData.Id" />
+            if(Model.CurrUserTasksCount>=2 && !User.IsInRole("admin") && !User.IsInRole("moderator"))
+            {
+                 <input type="button" class="btn btn-lg MainCanHelpButton" value="Создано максимальное количество заданий" />
+            }
+            if (User.IsInRole("admin") || User.IsInRole("moderator"))
+            {
+                <input id="AddHelpButton" onclick="AddHelpPointClick()" type="button" class="btn btn-lg MainHelpButton" value="Добавить задание" />
+            }
+            else
+            {
+                 <a style="text-decoration:none;" href="https://womenprolife.ru/request?from=pchl">
+                    <input type="button" class="btn btn-warning btn-lg MainCanHelpButton" value="Нужна помощь" />
+                </a>
+            }
+           
+        }
+    }
+    else
+    {
+        <a style="text-decoration:none;" asp-area="Identity" asp-page="/Account/Register">
+            <input type="button" class="btn btn-lg MainHelpButton" value="Нужна помощь" />
+        </a>
+        <a style="text-decoration:none;" asp-area="Identity" asp-page="/Account/Register">
+            <input type="button" class="btn btn-lg MainCanHelpButton" value="Могу помочь" />
+        </a>
+    }
+
+</div>
+@section Scripts{
+
+    <script src="~/js/Main.js" asp-append-version="true"></script>
+
+}
+
+

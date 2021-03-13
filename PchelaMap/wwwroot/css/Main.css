@@ -1,0 +1,542 @@
+﻿
+
+/* Filter(users/tasks) and Status part START */
+
+.StatusContainer
+{
+  position: absolute;
+  /* when NY disable */
+  top:0;
+  /* top:12.7%; */
+  left:0;
+  z-index:1;
+  width: 100%;
+}
+.TaskUserselectorContainer
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    color: black;
+    z-index: 1;
+    background-color: rgba(255, 183, 187,1);
+    width: 100%;
+    padding: 4px 0;
+    font-size: 1vw;
+}
+.ClientStatusMessage
+{
+  font-size: 1vw;
+}
+.ShowOnlyButtonOn, .ShowOnlyButtonOff
+{
+  margin: 0 0.2vw;
+  min-width: 12%;
+  padding: 0.25vw 1vw;
+  cursor: pointer;
+  border-radius: 13px;
+  user-select: none;
+}
+.ShowOnlyButtonOn
+{
+  background-color: rgba(255, 102, 114,1);
+  color: white;
+}
+.ShowOnlyButtonOff
+{
+  background-color: white;
+  color:rgba(255, 102, 114,1);
+/* border:1px solid; */
+}
+.NYcontainer
+{
+  height: 12%;
+  /* display: flex; */
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0 0 .7% 0;
+  z-index:1;
+  width: 100%;
+  
+}
+.NYLink
+{
+  cursor: pointer;
+  width: 34vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.NYimage
+{
+  height: 100%;
+}
+.NYLink:hover .NYButton
+{
+ background-color: rgba(255, 102, 114,1);
+}
+.NYLink:hover .NYButtonImage
+{
+  filter: brightness(3);
+}
+.NYLink:hover .NYimage
+{
+  border: solid 1px  rgba(255, 102, 114,1);
+}
+.NYButton
+{
+  position: relative;
+  width: 14vw;
+  background-color: rgba(253, 228, 233,1);
+}
+.NYButtonImage
+{
+  height: 100%;
+}
+
+/* Filter(users/tasks) and Status part END */
+
+/* MainPageBottomButtons part START */
+
+.MainBottomButtonsContainer
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 40px;
+    position: absolute;
+    bottom: 0;
+    font-size: 1.25vw;
+    pointer-events: none;
+}
+
+.MainHelpButton, .MainCanHelpButton
+{
+  background-color: rgba(255, 102, 114, 1);
+  border-width: 0.3vw;
+  border-style: solid;
+  border-color: rgba(255, 102, 114, 1);
+  margin-right: 1vw;
+  margin-left: 1vw;
+  border-radius: 13px;
+  min-width: 12vw;
+  height: 100%;
+  padding: 0.5vw 1.5vw;
+  pointer-events: all;
+  text-transform: uppercase;
+  color: white;
+}
+.MainCanHelpButton
+{
+  background-color: white;
+  color: rgba(255, 102, 114, 1);
+}
+.MainHelpButton:hover, .MainCanHelpButton:hover
+{
+  border-color: rgba(255, 102, 114, 1);
+  background-color: rgba(255, 183, 187,1);
+  text-decoration: none;
+  color: black;
+}
+/* MainPageBottomButtons part END */
+
+/* Task View Modal part START */
+
+.userTaskViewAvatar
+{
+  margin-right: 1vw;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  cursor: pointer;
+}
+
+.TakeTaskButton, .BuiltRouteButton, .SberTakeTaskButton, .ModalSberButton, .ModalSberCancelButton
+{
+  margin: 0;
+  width: 100%;
+  border-radius: 13px;
+  min-width: 12vw;
+  padding: 0.8vw 2vw;
+  pointer-events: all;
+  text-transform: uppercase;
+}
+.TakeTaskButton
+{
+  margin-left: 0 !important;
+  background-color: rgba(255, 102, 114, 1);
+  border-width: 0.3vw;
+  border-style: solid;
+  border-color: rgba(255, 102, 114, 1);
+  color: white;
+}
+.TakeTaskButton:hover
+{
+  border-color: rgba(255, 102, 114, 1);
+  background-color: rgba(255, 183, 187,1);
+  text-decoration: none;
+  color: black;
+}
+.SberTakeTaskButton
+{
+  background-color: rgba(33, 159, 56, 1);
+  border-width: 0.3vw;
+  border-style: solid;
+  border-color: rgba(33, 159, 56, 1);
+  background-image: url('../../Images/SberTakeTaskButton.png');
+  background-repeat: no-repeat;
+  background-position:center;
+  background-size: contain;
+}
+.ModalSberButton
+{
+  background-color: rgba(33, 159, 56, 1);
+  border-color: rgba(33, 159, 56, 1);
+}
+.SberTakeTaskButton:hover, .ModalSberButton:hover
+{
+  background-color: rgba(18, 144, 39, 1);
+  border-color: rgba(18, 144, 39, 1);
+}
+
+.NameLabel
+{
+  font-weight: bold;
+  max-width: 50%;
+}
+.TaskViewFormLabel, .PromoLabel, .PromoText, .LoaderText, .AdressDiv
+{
+  /* user-select: none; */
+  font-size: 1.2rem;
+}
+.AdressDiv
+{
+  font-weight:bold;
+}
+.PromoLabel, .PromoText
+{
+  width: 45%;
+  display: inline-block;
+}
+.PromoLabel
+{text-align: right;
+  padding: 0 0 0 0;
+  cursor:pointer; 
+  outline: none; 
+}
+.PromoText
+{text-align: center;
+}
+.TaskViewFormLabelSmall
+{
+  user-select: none;
+  width:100%;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+.TaskViewFormRow
+{
+  margin-top: 2vh;
+}
+.LoaderContainer
+{
+  display:none;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+}
+.LoaderDiv
+{
+  padding: 0vh 0vh;
+  width: 95%;
+  margin: auto;
+  top: 45%;
+  position: relative;
+  border-radius: 7px;
+  background-color: white;
+}
+.LoaderText
+{
+  user-select: none;
+  text-transform: uppercase;
+}
+.LoaderImage
+{
+  width: 3vw;
+}
+/* Task View Modal part END */
+
+/* Create Task View Modal part START */
+.TaskLocationMapContainer
+{
+  width:100%;
+  height:40vh;
+}
+.CreateTaskButton
+{
+  margin: 0;
+  width: 100%;
+  border-radius: 13px;
+  min-width: 12vw;
+  padding: 0.8vw 2vw;
+  background-color: rgba(255, 102, 114, 1);
+  border-width: 0.3vw;
+  border-style: solid;
+  border-color: rgba(255, 102, 114, 1);
+  pointer-events: all;
+  text-transform: uppercase;
+  color: white;
+}
+.CreateTaskButton:hover
+{
+  border-color: rgba(255, 102, 114, 1);
+  background-color: rgba(255, 183, 187,1);
+  text-decoration: none;
+  color: black;
+}
+.TaskAddFormRow
+{
+  margin-top: 2vh;
+}
+.TaskAddFormLabel
+{
+  user-select: none;
+  font-size: 1rem;
+}
+/* Create Task View Modal part END */
+@media screen and (max-width:1280px) {
+  /* NY part */
+
+/* NY part End */
+}
+@media screen and (max-width:1024px) {
+  /* NY part */
+  .NYLink {
+    width: 36vw;
+  }
+  .NYButton
+  {
+    width:16vw;
+  }
+  /* NY part End */
+/* Filter(users/tasks) and Status part START */
+
+.TaskUserselectorContainer, .ClientStatusMessage
+{
+    font-size: 1.5vw;
+}
+.StatusContainer
+{
+  font-size: 1.7vw;
+}
+/* Task View Modal part Start */
+.LoaderImage
+{
+  width: 4vw;
+}
+/* Task View Modal part END */
+}
+@media screen and (max-width:800px){
+
+  /* map part START */
+
+/* map part END */
+/* NY part */
+.NYcontainer
+{
+
+}
+.NYLink {
+  width: 64vw;
+}
+.NYButton
+{
+  width: 29vw;
+}
+.NYimage {
+ /* width: 100%; */
+}
+/* NY part End */
+
+/* Filter(users/tasks) and Status part START */
+
+.TaskUserselectorContainer, .ClientStatusMessage
+{
+    font-size: 2.1vw;
+}
+.StatusContainer
+{
+  font-size: 2.5vw;
+}
+.ShowOnlyButtonOn, .ShowOnlyButtonOff 
+{
+  margin: 0 0.8vw;
+  padding: 1.1vw 1vw;
+  border-radius: 13px;
+}
+/* Filter(users/tasks) and Status part END */
+
+/* MainPageBottomButtons part START */
+
+.MainHelpButton, .MainCanHelpButton {
+  padding: 2vw 2vw;
+}
+/* MainPageBottomButtons part END */
+
+/* Task View Modal part START */
+
+.modal-footer
+{
+  padding: 1.5vw;
+}
+.TaskViewFormLabel, .PromoLabel, .PromoText, .LoaderText, .AdressDiv
+{
+    margin-bottom: 0vh;
+}
+.TakeTaskButton, .SberTakeTaskButton, .ModalSberButton, .ModalSberCancelButton, .BuiltRouteButton
+{
+  padding: 1.5vw 2vw;
+  margin: 1vh auto !important;
+}
+.LoaderDiv
+{
+  padding: 2vh 0vh;
+}
+.LoaderImage
+{
+  width: 6vw;
+}
+/* Task View Modal part END */
+
+/* Create Task View Modal part START */
+.CreateTaskButton
+{
+  padding: 1.5vw 2vw;
+}
+.TaskViewFormLabelSmall
+{
+  font-size: .9rem;
+}
+/* Create Task View Modal part END */
+
+
+}
+@media screen and (max-width:480px){
+ 
+   /* NY part */
+   .StatusContainer
+   {
+     /* when NY disable */
+     /* top:25%; */
+   }
+   .NYcontainer
+   {
+     height:25%;
+     background-color: rgba(253, 228, 233,1);
+   }
+   .NYLink {
+    width: 100%;
+    overflow: hidden;
+}
+   .NYButton
+   {
+     display: none;
+   }
+   .NYimage {
+    /* width: 100%; */
+}
+ /* NY part End */
+
+  /* map part START */
+
+/* map part END */
+
+/* Filter(users/tasks) and Status part START */
+.TaskUserselectorContainer , .ClientStatusMessage
+{
+    font-size: 1.4em;
+}
+.ShowOnlyButtonOn, .ShowOnlyButtonOff 
+{
+  margin: 0 1.5vw;
+  padding: 1.2vw 1vw;
+  border-radius: 10px;
+}
+
+/* Filter(users/tasks) and Status part END */
+
+/* MainPageBottomButtons part START */
+
+.MainHelpButton , .MainCanHelpButton {
+  font-size: 3em;
+  padding: 3vw 2vw;
+}
+
+/* MainPageBottomButtons part END */
+
+/* Task View Modal part START */
+.modal-footer
+{
+  padding: 1.5vw;
+}
+.TakeTaskButton, .SberTakeTaskButton, .ModalSberButton, .ModalSberCancelButton, .BuiltRouteButton
+{
+  padding: 3vw 2vw;
+}
+.TaskViewFormLabel, .PromoLabel, .PromoText, .LoaderText, .AdressDiv
+{
+font-size: 1rem;
+padding: 0 1vw;
+    margin-bottom: 1vh;
+}
+.PromoLabel
+{
+      padding: 0 2vw 0 0;
+}
+.TaskViewFormLabelSmall
+{
+  font-size: 0.7rem;
+}
+.TaskViewFormRow
+{
+  margin-top: 0.5vh;
+}
+.LoaderImage
+{
+  width: 10vw;
+}
+/* Task View Modal part END */
+
+/* Create Task View Modal part START */
+.CreateTaskButton
+{
+  padding: 3vw 2vw;
+}
+.TaskAddFormLabel
+{
+  width: 50%;
+  font-size: 3.3vw;
+}
+.TaskAddFormRow
+{
+  margin-top: 0.5vh;
+}
+/* Create Task View Modal part END */
+
+
+}
+@media screen and (max-height:480px) {
+.TaskUserselectorContainer, .ClientStatusMessage {
+  font-size: 1.5vw;
+}
+.ShowOnlyButtonOn, .ShowOnlyButtonOff {
+padding: 0.1vw 1vw;
+}
+}

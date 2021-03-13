@@ -1,0 +1,636 @@
+﻿
+
+/* Global part START*/
+html {
+  position: relative;
+  min-height: 100%;
+  font-size: 16px;
+  
+}
+main{
+  text-align: center;
+    position: relative;
+  height: 100%;
+    width: 100%;
+    font-family: 'Roboto', sans-serif;
+}
+header
+{
+  height: 5vw;
+  margin-top: -5vw;
+  font-family: 'Roboto', sans-serif;
+}
+.mainContainer
+{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 5vw;
+  display: flex;
+  flex-flow: column;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  font-size: 1.2rem;
+}
+
+/* Global part END*/
+
+/* Menu part START*/
+.HeaderContainer
+{
+  padding: .5rem 3rem;
+}
+.LogoContainer
+{
+
+}
+.Logo
+{
+width: 80%;
+}
+.Menu
+{
+text-transform: uppercase;
+flex-wrap: wrap;
+}
+.LoginProfileContainer
+{
+align-content: center;
+}
+/* Menu part END*/
+
+/* map part START */
+.MapContainer
+{
+  position: relative;
+  display: block;
+  width: 100%;
+  /* when NY disable */
+  height: 100%;
+  /* height: 87.3%; */
+}
+
+.placemark_layout_container
+{
+  width: 49px;
+  height: 49px;
+  border: solid 2px orange;
+  border-radius: 48px;
+}
+.task_placemark_layout_container, .urgent_task_placemark_layout_container, .done_task_placemark_layout_container
+{
+  width: 49px;
+  height: 49px;
+  border-radius: 48px;
+  background-color: rgba(246, 137, 16, 0.301);
+}
+.done_task_placemark_layout_container
+{
+  background-color: rgba(212, 78, 226, 0.301);
+}
+.urgent_task_placemark_layout_container
+{
+  background-color: rgba(255, 0, 0, 0.301);
+}
+.circle_layout
+{
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+.task_circle_layout , .urgent_task_circle_layout, .done_task_circle_layout
+{
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background-image: url('../../Images/UsualTaskRound.png');
+  background-size: 75% 75%;
+  background-repeat: no-repeat;
+  background-position:center;
+}
+.urgent_task_circle_layout
+{
+  background-image: url('../../Images/UrgentTaskRound.png');
+}
+.done_task_circle_layout
+{
+  background-image: url('../../Images/DoneTaskRound.png');
+}
+/* map part END */
+
+/* User Profile Button START */
+
+.UserProfileContainer{
+display: -ms-flexbox;
+display: flex;
+-ms-flex-direction: row;
+flex-direction: row;
+padding-left: 0;
+margin-bottom: 0;
+list-style: none;
+}
+
+.UserProfileButtonContainer{
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: center;
+  border-radius: 5px;
+  /* padding: 8px 12px; */
+  }
+  .UserProfileButtonContainer:hover
+{
+  background-color: rgba(255, 183, 187,.5);
+}
+.UserProfileButtonAvatar
+{
+  margin-right: 0.5vw;
+  border-radius: 5px;
+  /* width: 56px;
+  height: 56px; */
+  width: 2.917vw;
+  height: 2.917vw;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  cursor: pointer;
+}
+.UserProfileButtonTextContainer
+{
+  display: flex;
+  flex-direction: column;
+  color: #634648;
+}
+.UserProfileButtonUserName
+{
+  font-weight: 600;
+  font-size: 1vw;
+}
+.UserProfileButtonEditSpan
+{
+  font-size: .9vw;
+  text-transform: lowercase;
+}
+/* User Profile Button END */
+
+/* Login, Register, Logout Buttons */
+
+.LoginButton, .RegisterButton, .LogoutButton
+{
+  margin: 0 0.5vw;
+    border-radius: 13px;
+text-transform: uppercase;
+background-color: rgba(255, 183, 187,1);
+color: #634648;
+}
+.LogoutButton
+{
+  height: 3vw;
+  width: 3vw;
+  margin-left: 0.5vw !important;
+  font-size: 0 !important;
+background-repeat: no-repeat;
+background-position:center;
+background-size: contain;
+background-image: url('../../Images/LogoutRsmall.png');
+  
+  background-color: white;
+  margin: auto;
+}
+.LogoutButton:hover
+{
+  background-color: rgba(255, 183, 187,.5);
+}
+.form-inline {
+  height: 100%;
+}
+/* Logout Button */
+
+/* Misc START*/
+.CookieConsiderText
+{
+  font-size: 1vw;
+}
+.CookieConsentDiv
+{
+  z-index: 99;
+  position: absolute;
+  width: 100%;
+}
+
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.nav-link{
+  text-align: center;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+.ConfirmButtonsSet
+{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+.btn:focus,.btn:active {
+  outline: none !important;
+  box-shadow: none;
+}
+button.accept-policy {
+  font-size: 1vw;
+  line-height: inherit;
+  bottom: 0;
+  margin: auto;
+}
+.modal-title
+{
+  font-size: 1vw;
+  user-select: none;
+  text-transform: uppercase;
+}
+.nav-item
+{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  font-size: 1vw;
+}
+.btn{
+  font-size: 1vw;
+}
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: normal;
+  font-size: 1.2vw;
+}
+
+btn:active, .active
+{
+  color: black !important;
+  background-color: rgba(255,181,47,0.5) !important;
+}
+/* Misc END*/
+@media screen and (max-width:1280px) {
+  a.navbar-brand {
+ 
+    font-size: 1.2vw;
+  }
+  .nav-item
+  {
+    font-size: 1.2vw;
+  }
+  .CookieConsiderText
+{
+  font-size: 1.2vw;
+}
+button.accept-policy {
+  font-size: 1.2vw;
+}
+  .btn{
+    font-size: 1.2vw;
+  }
+  .UserProfileButtonUserName
+  {
+    font-size: 1.2vw;
+  }
+  .UserProfileButtonEditSpan
+  {
+    font-size: 1.1vw;
+  }
+  .modal-title
+{
+  font-size: 1.2vw;
+}
+.HeaderContainer {
+  padding: .5rem 1.5rem;
+}
+header
+{
+  height: 6vw;
+  margin-top: -6vw;
+}
+.mainContainer
+{
+  padding-top: 6vw;
+}
+}
+
+@media screen and (max-width:1024px) {
+  a.navbar-brand {
+ 
+    font-size: 1.5vw;
+  }
+  .nav-item
+  {
+    /* NY change */
+    /* font-size: 1.5vw; */
+    font-size: 1vw;
+  }
+  .CookieConsiderText
+{
+  font-size: 1.5vw;
+}
+button.accept-policy {
+  font-size: 1.5vw;
+}
+  .btn{
+    font-size: 1.5vw;
+  }
+  .UserProfileButtonUserName
+  {
+    
+    /* font-size: 1.5vw; */
+    /* NY change */
+    font-size: 1.2vw;
+  }
+  .UserProfileButtonEditSpan
+  {
+    /* font-size: 1.4vw; */
+    /* NY change */
+    font-size: 1.1vw;
+  }
+  .LogoutButton
+  {
+    
+  }
+  .modal-title
+{
+  font-size: 1.4vw;
+}
+/* Misc END*/
+/* Menu part START*/
+.HeaderContainer
+{
+  padding: .5rem 1rem;
+}
+/* Menu part END*/
+/* Global part START*/
+header
+{
+  height: 7vw;
+  margin-top: -7vw;
+}
+.mainContainer
+{
+  padding-top: 7vw;
+}
+/* Global part END*/
+}
+@media screen and (max-width:800px) {
+
+
+/* Global part START*/
+header
+{
+  height: 11vw;
+  margin-top: -11vw;
+}
+.mainContainer
+{
+  padding-top: 11vw;
+}
+/* Global part END*/
+
+/* Menu part START*/
+.navbar-collapse
+{
+  z-index: 100;
+    background-color: white;
+}
+.Logo
+{
+width: 65vw;
+}
+.Menu
+{
+justify-content: space-around!important;
+}
+/* Menu part END*/
+/* User Profile Button START */
+
+.UserProfileContainer {
+  -ms-flex-direction: row;
+  flex-direction: row;
+}
+.UserProfileButtonContainer{
+  padding: 0;
+  }
+.UserProfileButtonAvatar
+{
+  width: 10vw;
+  height: 10vw;
+  display: none;
+}
+.UserProfileButtonTextContainer {
+  text-align: center;
+}
+/* User Profile Button END */
+
+/* Logout Button */
+.LogoutButton
+{
+  font-size: initial !important;
+  margin-left:auto !important;
+  height: initial;
+  width: initial;
+  background-image: none;
+}
+/* Logout Button */
+ /* Misc START*/
+.navbar-nav
+{
+  /* flex-flow: wrap;
+  justify-content: space-around; */
+  
+}
+
+.modal-header {
+  padding: 0.3rem 1rem;
+}
+.modal-title
+{
+  font-size: 1.2rem;
+  user-select: none;
+}
+.CookieConsiderText
+{
+  font-size: 1.2rem;
+}
+.CookieConsiderButtons
+{
+  margin-top:2vh;
+}
+button.accept-policy {
+  font-size: 1.2rem;
+}
+a.navbar-brand {
+ 
+  font-size: 1.3rem;
+}
+.nav-item
+{
+  font-size: 1.2rem;
+}
+.btn{
+  font-size: 1.2rem;
+}
+.UserProfileButtonUserName
+{
+  font-size: 1.2rem;
+}
+.UserProfileButtonEditSpan
+{
+  font-size: 1.1rem;
+}
+  /* Misc END*/
+}
+@media screen and (max-width:480px) {
+
+
+/* Global part START*/
+header
+{
+  height: 20vw;
+  margin-top: -20vw;
+}
+.mainContainer
+{
+  padding-top: 20vw;
+}
+body {
+  font-size: 4.1vw;
+}
+/* Global part END*/
+  /* NY part */
+  .MapContainer
+  {
+    /* when NY disable */
+    /* height: 74.3%; */
+  }
+/* NY part End */
+/* User Profile Button START */
+
+
+.UserProfileButtonEditSpan
+{
+  font-size: 3.7vw;
+}
+/* User Profile Button END */
+
+
+/* Login, Register, Logout Buttons */
+
+/* Login, Register, Logout Buttons */
+/* Misc START*/
+
+.modal-body
+{
+  padding:0.3rem
+}
+.modal-header {
+  padding: 0.3rem 1rem;
+}
+.modal-title
+{
+  font-size: 4.1vw;
+}
+.CookieConsiderText
+{
+  font-size: 3.1vw;
+}
+button.accept-policy {
+  font-size: 3.1vw;
+}
+a.navbar-brand {
+ 
+  font-size: 4.8vw;
+}
+.nav-item
+{
+  font-size: 4.1vw;
+}
+.btn{
+  font-size: 4.1vw;
+}
+.navbar-nav
+{
+font-size: 0.8em;
+}
+.UserProfileButtonAvatar {
+  margin-right: 2vw;
+}
+.UserProfileButtonUserName
+{
+  font-size: 4.1vw;
+}
+  /* Misc END*/
+}
+@media screen and (max-height:480px) {
+  .CookieConsiderText
+  {
+    font-size: 2.1vw;
+  }
+  button.accept-policy {
+    font-size: 2.1vw;
+  }
+  .Logo{
+    width:25vw;
+  }
+  header
+  {
+    height: 9vw;
+    margin-top: -9vw;
+  }
+  .mainContainer
+  {
+    padding-top: 9vw;
+  } 
+
+}
+@media screen and (min-width:3500px) {
+  /* Global part START*/
+  /* header
+  {
+    height: 171.67px;
+    margin-top: -171.67px;
+  }
+  .mainContainer
+  {
+    padding-top: 171.67px;
+  } */
+  /* Global part END*/
+}

@@ -1,0 +1,14 @@
+﻿@{
+
+}
+<link type="text/css" rel="stylesheet" href="~/css/About.css" />
+<div class="MainPanel">
+    <div class="MainHeader">@ViewData["MainHeader"]</div>
+    @foreach (About _ServicesContent in (IEnumerable<About>)ViewData["Text"])
+    {
+        <br />
+        <div class="TextDiv">
+            @Html.Raw(_ServicesContent.text)
+        </div>
+    }
+</div>

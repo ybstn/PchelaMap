@@ -1,0 +1,83 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>aspnet-PchelaMap-C8CE539D-4B43-462C-912D-42E8B825E105</UserSecretsId>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.9"><IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+<PrivateAssets>all</PrivateAssets>
+</PackageReference>
+    <PackageReference Include="System.Text.Json" Version="4.7.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" ExcludeAssets="All" />
+    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
+    <PackageReference Include="runtime.osx.10.10-x64.CoreCompat.System.Drawing" Version="5.8.64" />
+    <PackageReference Include="AspNet.Security.OAuth.Vkontakte" Version="3.1.3" />
+    <PackageReference Include="MailKit" Version="2.9.0" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.11.3" />
+    <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite.Core" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.9" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.9" />
+    <PackageReference Include="SQLitePCLRaw.bundle_e_sqlcipher" Version="2.0.4" />
+    <PackageReference Include="CsvHelper" Version="18.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\Identity\Data\" />
+    <Folder Include="Views\Admin\" />
+    <Folder Include="TagHelpers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="app.db" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\Images\UsersPhoto\d255384f-d1e7-4362-ae54-b800473d86f7\d255384f-d1e7-4362-ae54-b800473d86f7.jpg" />
+    <Content Remove="wwwroot\js\jsons\5b6958b5-39dd-4c15-ab73-47690b91553f\DoneTasksObjectsJson.json" />
+    <Content Remove="wwwroot\js\jsons\5b6958b5-39dd-4c15-ab73-47690b91553f\TasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\5b6958b5-39dd-4c15-ab73-47690b91553f\UrgentTasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\5b6958b5-39dd-4c15-ab73-47690b91553f\UsersGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\716fffcb-dd89-4368-bc75-80103a36214c\DoneTasksObjectsJson.json" />
+    <Content Remove="wwwroot\js\jsons\716fffcb-dd89-4368-bc75-80103a36214c\TasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\716fffcb-dd89-4368-bc75-80103a36214c\UrgentTasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\716fffcb-dd89-4368-bc75-80103a36214c\UsersGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\77a979b0-6251-4bd4-9738-782244b17637\DoneTasksObjectsJson.json" />
+    <Content Remove="wwwroot\js\jsons\77a979b0-6251-4bd4-9738-782244b17637\TasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\77a979b0-6251-4bd4-9738-782244b17637\UrgentTasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\77a979b0-6251-4bd4-9738-782244b17637\UserPersonal.json" />
+    <Content Remove="wwwroot\js\jsons\77a979b0-6251-4bd4-9738-782244b17637\UsersGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\c9d3fbbe-eac5-4511-a2fc-1cc7262db5f6\DoneTasksObjectsJson.json" />
+    <Content Remove="wwwroot\js\jsons\c9d3fbbe-eac5-4511-a2fc-1cc7262db5f6\TasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\c9d3fbbe-eac5-4511-a2fc-1cc7262db5f6\UrgentTasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\c9d3fbbe-eac5-4511-a2fc-1cc7262db5f6\UserPersonal.json" />
+    <Content Remove="wwwroot\js\jsons\c9d3fbbe-eac5-4511-a2fc-1cc7262db5f6\UsersGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\d255384f-d1e7-4362-ae54-b800473d86f7\DoneTasksObjectsJson.json" />
+    <Content Remove="wwwroot\js\jsons\d255384f-d1e7-4362-ae54-b800473d86f7\TasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\d255384f-d1e7-4362-ae54-b800473d86f7\UrgentTasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\d255384f-d1e7-4362-ae54-b800473d86f7\UsersGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\716fffcb-dd89-4368-bc75-80103a36214c\UserPersonal.json" />
+    <Content Remove="wwwroot\js\jsons\dedf6638-34dc-4512-a110-9ac9af8243b5\DoneTasksObjectsJson.json" />
+    <Content Remove="wwwroot\js\jsons\dedf6638-34dc-4512-a110-9ac9af8243b5\TasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\dedf6638-34dc-4512-a110-9ac9af8243b5\UrgentTasksGeoObjects.json" />
+    <Content Remove="wwwroot\js\jsons\dedf6638-34dc-4512-a110-9ac9af8243b5\UserPersonal.json" />
+    <Content Remove="wwwroot\js\jsons\dedf6638-34dc-4512-a110-9ac9af8243b5\UsersGeoObjects.json" />
+    <Content Remove="wwwroot\Images\TasksReports\7a716b37-1d37-4608-8938-4eb89cd55bf4\d9b5b965-ad66-4695-9c94-fc0fc0f9145a\_ReportFile1.mp4" />
+    <Content Remove="wwwroot\Images\TasksReports\7a716b37-1d37-4608-8938-4eb89cd55bf4\d9b5b965-ad66-4695-9c94-fc0fc0f9145a\_ReportFile2.mp4" />
+    <Content Remove="wwwroot\Images\TasksReports\7a716b37-1d37-4608-8938-4eb89cd55bf4\d9b5b965-ad66-4695-9c94-fc0fc0f9145a\_ReportFile3.mp4" />
+    <Content Remove="wwwroot\Images\TasksReports\7a716b37-1d37-4608-8938-4eb89cd55bf4\d9b5b965-ad66-4695-9c94-fc0fc0f9145a\_ReportFile4.mp4" />
+    <Content Remove="wwwroot\Images\TasksReports\7a716b37-1d37-4608-8938-4eb89cd55bf4\d9b5b965-ad66-4695-9c94-fc0fc0f9145a\Info.txt" />
+    <Content Remove="wwwroot\Images\TasksReports\88cf991e-e27d-4970-89dd-63a765562728\b3cfb93b-c9b8-4a4c-ae7a-42aa00dd0149\IMG_20201011_090814.jpg" />
+    <Content Remove="wwwroot\Images\TasksReports\88cf991e-e27d-4970-89dd-63a765562728\b3cfb93b-c9b8-4a4c-ae7a-42aa00dd0149\Info.txt" />
+    <Content Remove="wwwroot\.DS_Store" />
+    <Content Remove="wwwroot\css\.DS_Store" />
+    <Content Remove="wwwroot\lib\daterangepicker-master\.gitignore" />
+    <Content Remove="wwwroot\xml\.DS_Store" />
+    <Content Remove="wwwroot\xml\.~lock.Promo.xml#" />
+  </ItemGroup>
+</Project>

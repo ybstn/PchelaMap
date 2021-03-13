@@ -1,0 +1,54 @@
+﻿@model List<string>
+
+<div class="modal-content">
+    <div class="modal-header" style="align-items: center;">
+        <span class="col-md-10 offset-md-1 modal-title">ФАЙЛЫ ОТЧЁТА</span>
+        <button type="button" class="close" data-dismiss="modal" area-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="col-md-12 TaskGallery">
+            @{ int i = 0;}
+            @foreach (string ResultFile in Model)
+            {
+                <div class="TaskGalleryElement">
+                    <div class="TaskGalleryMedia">
+                        @if (ResultFile.Contains(".mp4") || (ResultFile.Contains(".mov") || ResultFile.Contains(".MOV")))
+                        {
+
+                            <video class="TaskVideo" controls disablePictureInPicture controlsList="nodownload noremoteplayback">
+                                <source src="/@ResultFile#t0.1" type="video/mp4" />
+                            </video>
+
+                        }
+                        else
+                        {
+                            if (ResultFile.Contains(".pdf"))
+                            {
+                                @*<div class="PdfZoom" onclick="ZoomPdf(@i);">+</div>*@
+                               
+                                <iframe  id="@i" class="TaskPdf" src="/@ResultFile"></iframe>
+                                <div class="PdfOpenLink"><a href="/@ResultFile">Открыть файл</a></div>
+
+                            }
+                            else
+                            {
+                                <div class="TaskImage" style="background-image: url('/@ResultFile')" onclick="ZoomPicture(this)"></div>
+                            }
+
+
+                        }
+                    </div>
+                </div>
+                i++;
+            }
+
+        </div>
+    </div>
+</div>
+@section Scripts{
+
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+
+}

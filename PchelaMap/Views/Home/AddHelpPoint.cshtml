@@ -1,0 +1,101 @@
+﻿@model CreateTaskModel
+<div class="modal-content">
+    <div class="modal-header" style="align-items: center;">
+        <span class="col-md-10 offset-md-1 modal-title">Заявка на помощь</span>
+        <button type="button" class="close" data-dismiss="modal" area-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form asp-action="AddHelpPointPost" asp-controller="Home" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-5 my-auto">
+                    <span class="TaskAddFormLabel" asp-for="@Model.UserName">ИМЯ:</span>
+                </div>
+                <div class="col-md-7">
+                    <input id="UserName" asp-for="@Model.UserName" class="form-control " />
+                    <span asp-validation-for="@Model.UserName" class="text-danger TaskAddFormLabel"></span>
+                </div>
+            </div>
+            <div class="row TaskAddFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="TaskAddFormLabel" asp-for="@Model.UserPhone">НОМЕР ТЕЛЕФОНА:</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="tel" id="UserPhoneNumber" asp-for="@Model.UserPhone" class="form-control "
+                           placeholder="89991112233" />
+                    <span asp-validation-for="@Model.UserPhone" class="text-danger TaskAddFormLabel"></span>
+                </div>
+            </div>
+            <div class="row TaskAddFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="TaskAddFormLabel" asp-for="@Model.UserMail">ЭЛЕКТРОННАЯ ПОЧТА:</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="email" id="UserMail" asp-for="@Model.UserMail" class="form-control "
+                           placeholder="somemail@mail.ru" />
+                    <span asp-validation-for="@Model.UserMail" class="text-danger TaskAddFormLabel"></span>
+                </div>
+            </div>
+            <div class="col-md-12 TaskAddFormRow">
+                <span asp-validation-for="@Model.TaskDescription" class="text-danger TaskAddFormLabel"></span>
+                <textarea id="TaskDescription" asp-for="@Model.TaskDescription" rows="6" style="width:100%"
+                          placeholder="Опишите, какая помощь Вам необходима"></textarea>
+            </div>
+            <div class="row TaskAddFormRow" id="UrgentCheckButton" style="justify-content:center; align-items:center;">
+                <span class="TaskAddFormLabel">СРОЧНОЕ ЗАДАНИЕ:</span>
+                <input type="checkbox" data-toggle="toggle" asp-for="@Model.Urgentability"
+                       data-onstyle="danger" data-offstyle="secondary"
+                       data-on="да" data-off="нет"
+                       id="UrgentCheckBox" />
+            </div>
+            <div class="row TaskAddFormRow" id="UrgentCheckButton" style="justify-content:center; align-items:center;">
+                <span class="TaskAddFormLabel">ЗАДАНИЕ ДЛЯ АКЦИИ:</span>
+                <input type="checkbox" data-toggle="toggle" asp-for="@Model.NYTaskBool"
+                       data-onstyle="danger" data-offstyle="secondary"
+                       data-on="да" data-off="нет"
+                       id="NYCheckBox" />
+            </div>
+            <div class="row TaskAddFormRow" style="justify-content:center; align-items:center;">
+                <span class="TaskAddFormLabel">ДЛЯ ВЫПОЛНЕНИЯ ЗАДАНИЯ НУЖЕН АВТОМОБИЛЬ: </span>
+                <input type="checkbox" data-toggle="toggle" asp-for="@Model.NeedsCar"
+                       data-onstyle="success" data-offstyle="secondary"
+                       data-on="да" data-off="нет"
+                       id="CarCheckBox" />
+            </div>
+            <div class="col-md-12 TaskAddFormRow">
+                <span class="TaskAddFormLabel" style="padding:0.5vh 0;">ОТМЕТЬТЕ ВАШ АДРЕС НА КАРТЕ:</span>
+                <textarea id="UserAdress" asp-for="@Model.UserAdress" class="form-control UserAdress" readonly="readonly" rows="1">@Model.UserAdress</textarea>
+
+            </div>
+            <div class="col-md-12">
+                <div id="UserLocationMap" class="TaskLocationMapContainer"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            @if (Model.CreatedTasksCount < 2 || User.IsInRole("admin") || User.IsInRole("moderator"))
+            {
+                @if (User.IsInRole("ban"))
+                {
+                    <input type="button" class="btn btn-block CreateTaskButton" value="Вы не можете создавать задания" /> }
+                else
+                {
+                <input type="submit" class="btn btn-block CreateTaskButton" value="Сохранить" />                }
+                }
+            else
+            {
+                <input type="button" class="btn btn-block CreateTaskButton" value="Лимит активных заданий исчерпан" />
+            }
+
+        </div>
+        <input type="hidden" id="UserCoordX" name="UserCoordX" value="@Model.UserCoordX" asp-for="@Model.UserCoordX" />
+        <input type="hidden" id="UserCoordY" value="@Model.UserCoordY" asp-for="@Model.UserCoordY" />
+        <input type="hidden" id="UserCoordinates" asp-for="@Model.UserCoordinates" class="form-control" />
+    </form>
+</div>
+<link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+<script type="text/javascript" asp-append-version="true" src="~/js/CreateTaskPoint.js"></script>
+<partial name="_ValidationScriptsPartial" />
+
+

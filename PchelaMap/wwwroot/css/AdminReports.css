@@ -1,0 +1,24 @@
+ th:nth-child(1) { min-width: 12vw; max-width: 12vw; }
+ td:nth-child(1){ min-width: 6vw; max-width: 6vw; }
+ td:nth-child(2){ min-width: 6vw; max-width: 6vw; }
+td:nth-child(3), th:nth-child(2) { min-width: 6vw; max-width: 6vw; }
+th:nth-child(3) { min-width: 12vw; max-width: 12vw; }
+td:nth-child(4) { min-width: 6vw; max-width: 6vw; } 
+td:nth-child(5) { min-width: 6vw; max-width: 6vw; word-break: break-word;} 
+td:nth-child(6), th:nth-child(4) { min-width: 9vw; max-width: 9vw;}
+td:nth-child(7), th:nth-child(5) { min-width: 6vw; max-width: 6vw; }
+td:nth-child(8), th:nth-child(6) { min-width:20vw; max-width: 20vw;}
+td:nth-child(9), th:nth-child(7) { min-width: 20vw; max-width: 20vw;}
+td:nth-child(10), th:nth-child(8) { min-width:13vw; max-width: 13vw; }
+
+.AdminUserRow{
+background-color:rgba(0, 155, 0, .1) ;
+}
+.ModerUserRow
+{
+  background-color:rgba(155, 155, 0, .1) ;
+}
+.BanUserRow
+{
+  background-color:rgba(155, 0, 0, .2) ;
+}

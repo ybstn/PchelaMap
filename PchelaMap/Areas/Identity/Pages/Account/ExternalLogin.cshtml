@@ -1,0 +1,34 @@
+﻿@page
+@model ExternalLoginModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+<p id="external-login-description" class="text-info">
+    Вы успешно зарегестрировались с помощью <strong>@Model.ProviderDisplayName</strong>.
+    К сожалению, мы не смогли получить от <strong>@Model.ProviderDisplayName</strong> информацию о вашей электронной почте.
+    Пожалуйста, введите адрес электронной почты для этого сайта и нажмите кнопку
+    "Подтвердить", чтобы подтвердить почту и закончить процесс регистрации. После нажатия кнопки, на указанный адрес будет выслано письмо с сылкой подтверждения.
+</p>
+
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" placeholder="email@mail.ru" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

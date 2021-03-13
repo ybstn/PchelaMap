@@ -1,0 +1,337 @@
+﻿
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@model List<User>
+<link rel="stylesheet" href="~/css/Admin.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/AdminUsers.css" asp-append-version="true" />
+
+<div id="SearchModDialog" class="modal modal-wide fade" role="dialog">
+    <div id="SearchModContent" class="modal-dialog modal-dialog-centered" role="document"></div>
+</div>
+<input type="button" class="btn SearchButton" onclick="OpenUsersSearchModalClick()" />
+<div class="AdminMainContainer">
+    <partial name="_AdminMenuPartial" />
+
+    @if (Model.Count() == 0)
+    {
+<h3>@ViewBag.UsersCountMessage</h3> }
+else
+{
+     
+<div id="RecordControls" class="RecordControls container-fluid">
+    <form method="post">
+        <div class="row">
+            <div class="col-sm-4">
+                <button onclick="return confirmAvaReset();" type="submit" asp-action="ChangeUsersAva" class="btn btn-primary">ОЧИСТИТЬ АВАТАРКИ ВЫБРАННЫХ ПОЛЬЗОВАТЕЛЕЙ</button>
+            </div>
+            <div class="col-sm-4 dropdown">
+                <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button">
+                    ИЗМЕНИТЬ РОЛЬ ВЫБРАННЫХ ПОЛЬЗОВАТЕЛЕЙ
+                </button>
+                <div class="dropdown-menu">
+                    @foreach (var _role in _RoleManager.Roles.ToList())
+                    {
+                        <button onclick="return confirmRoleChange();" class="dropdown-item" type="submit" asp-action="EditRoles" asp-route-role="@_role.Name">
+                            @_role.Name
+                        </button>
+                        }
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <button onclick="return confirmDelete();" type="submit" asp-action="DeleteUsers" class="btn btn-danger">УДАЛИТЬ ВЫБРАННЫХ ПОЛЬЗОВАТЕЛЕЙ</button>
+            </div>
+        </div>
+        <input type="hidden" id="SelectedIds" name="SelectedIds" value="" />
+    </form>
+</div>
+<div class="AdminTableContainer">
+    <table class="UsersDBStyle">
+
+        <thead class="AdminTableHeader">
+            <tr>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["IndexSort"]">
+                        №
+                    </a>
+
+                </th>
+                <th class="TableHeader">
+                    Аватарка
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSort"]">
+                        Дата рег-ции
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    @*<table style="width:100%">
+                <tr>
+                    <td class="SortUpDownIconsContainer">
+                        <i class="sortIconUp"></i>
+                        <i class="sortIconDown"></i>
+                    </td>
+                    <td class="ColumnNameContainer">
+                        <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">
+                            Имя
+                        </a>
+                        <div>
+                            id
+                        </div>
+                    </td>
+                </tr>
+            </table>*@
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["NameSort"]">
+                        Имя
+                    </a>
+                    <div>
+                        id
+                    </div>
+                </th>
+                <th class="TableHeader">
+                            Телефон
+                </th>
+                <th class="TableHeader">
+                        e-mail
+                </th>
+                <th class="TableHeader">
+                    Адрес
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["HasAutoSort"]">
+                        Авто
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <div>
+                        Соцсеть
+                    </div>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["CreatedTasksSort"]">
+                        Выполн. задания
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["TakenTasksSort"]">
+                        Взятые задания
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["PointsSort"]">
+                        Баллы
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Index" asp-route-sortOrder="@ViewData["UnfinishedSort"]">
+                        Не вып. задания
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    Роль
+                </th>
+                <th class="TableHeader">
+                    Статус
+                </th>
+
+            </tr>
+        </thead>
+        <tbody id="selectable" class="AdminTableBody ">
+            @{ int index = 0;
+                string rowClass;
+                string userRoleAlertStyle;}
+            @foreach (PchelaMap.Models.User _Users in Model)
+            {
+                rowClass = "";
+                userRoleAlertStyle = "";
+                if (_Users.Role == "admin")
+                {
+                    rowClass = "AdminUserRow";
+                    userRoleAlertStyle = "alert-success";
+                }
+                else
+                {
+                    if (_Users.Role == "ban")
+                    {
+                        rowClass = "BanUserRow";
+                        userRoleAlertStyle = "alert-danger";
+                    }
+                    else
+                    {
+                        if (_Users.Role == "moderator")
+                        {
+                            rowClass = "ModerUserRow";
+                            userRoleAlertStyle = "alert-warning";
+                        }
+                        else
+                        {
+                            if (_Users.Role == "user")
+                            {
+                                rowClass = "UserUserRow";
+                                userRoleAlertStyle = "alert-primary";
+                            }
+                        }
+                    }
+                }
+            <tr id="row @index" class="@rowClass ui-widget-content">
+                <td class="TableCellMidleTextalign">
+                    @_Users.InListNumber
+                </td>
+                <td class="TableCell">
+                    <div class="UserAvatar" style="background-image:url('@_Users.PhotoUrl');"></div>
+                </td>
+                <td class="TableCell">
+                    @_Users.RegistrationDate
+                </td>
+                <td class="TableCell">
+                    <div>
+                        <div>
+                            @_Users.Name
+                        </div>
+                        <div Class="IdSubcell">
+                            @_Users.id
+                        </div>
+                        <input type="hidden" value="@_Users.id" />
+                    </div>
+                </td>
+                <td class="TableCell">
+                        <div>
+                            @_Users.Phone
+                        </div>
+                    </td>
+                    <td class="TableCell">
+                        <div>
+                                
+                                    <button style="width: 100%; text-align: left; padding-left: 0;padding-right: 0;"
+                                            class="btn btn-light" type="submit"
+                                            onclick="window.location.href='mailto: @_Users.Email'">
+                                        @_Users.Email
+                                        </button>
+                            </div>
+                        </td>
+                        <td class="TableCell">
+
+                            <div>
+                                @_Users.Adress
+                            </div>
+
+                        </td>
+                        <td class="TableCellMidleTextalign">
+                            <div>
+                                @if (_Users.HasCar == 1)
+                                {
+            <span>есть</span> }
+        else
+        {
+            <span>нет</span>}
+                            </div>
+                        </td>
+                        <td class="TableCell">
+                            <div>
+                                @if (@_Users.LoginProviderName == "Facebook")
+                                {
+            <button style="width:100%;" class="btn btn-light" disabled>FB</button>}
+                                @if (@_Users.LoginProviderName == "Vkontakte")
+                                {
+            <form action=@Url.Content("https://vk.com/id"+@_Users.SocialMediaId)>
+                <button style="width:100%;" class="btn btn-light" type="submit">VK</button>
+            </form>}
+                            </div>
+                        </td>
+                        <td class="TableCellMidleTextalign">
+                            @if (_Users.DoneTasksCount != "0")
+                            {
+            <form>
+                <button class="btn btn-primary ChangeRoleButton" type="submit" asp-action="SingleUserTasksView" asp-route-id="@_Users.id">
+                    @_Users.DoneTasksCount
+                </button>
+            </form> }
+                                else
+                                {
+            <div class="alert-light ChangeRoleButton">
+                @_Users.DoneTasksCount
+            </div>                    }
+                        </td>
+                        <td class="TableCellMidleTextalign">
+
+                            @if (_Users.TakenTasksCount != "0")
+                            {
+            <form>
+                <button class="btn btn-warning ChangeRoleButton" type="submit" asp-action="SingleUserTakenTasksView" asp-route-id="@_Users.id">
+                    @_Users.TakenTasksCount
+                </button>
+            </form> }
+                                else
+                                {
+            <div class="alert-light ChangeRoleButton">
+                @_Users.TakenTasksCount
+            </div>                    }
+                        </td>
+                        <td class="TableCellMidleTextalign">
+                            @if (_Users.UserPoints > 0)
+                            {
+                            <div class="alert-success">
+                                @_Users.UserPoints
+                            </div>
+                            }
+                            else
+                            {
+                            <div class="alert-light">
+                                @_Users.UserPoints
+                            </div>
+                            }
+                        </td>
+                        <td class="TableCellMidleTextalign">
+                            @if (_Users.uncompletedTasks > 0)
+                            {
+                            <div class="alert-dark">
+                                @_Users.uncompletedTasks
+                            </div>
+                            }
+                            else
+                            {
+                            <div class="alert-light">
+                                @_Users.uncompletedTasks
+                            </div>
+                            }
+                        </td>
+                        <td class="TableCellMidleTextalign">
+                            <div>
+
+
+                                <div class="@userRoleAlertStyle">
+                                    @_Users.Role
+                                </div>
+
+
+
+
+
+
+                            </div>
+                        </td>
+                        <td class="DeleteButtonTableCell">
+                        </td>
+                    </tr>index++;
+                }
+        </tbody>
+    </table>
+</div>}
+</div>
+@section Scripts{
+
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+    <script type="text/javascript" src="~/lib/jquery-ui/dist/jquery-ui.js"></script>
+}
+@section csss
+{
+    <link rel="stylesheet" href="~/lib/jquery-ui/dist/jquery-ui.css" />
+    <link rel="stylesheet" href="~/lib/jquery-ui/dist/jquery-ui.theme.css" />
+
+
+
+}

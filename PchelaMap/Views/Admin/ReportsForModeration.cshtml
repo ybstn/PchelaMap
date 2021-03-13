@@ -1,0 +1,190 @@
+﻿
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model IEnumerable<PchelaMap.Models.UserWithTasks>
+<link rel="stylesheet" href="~/css/Admin.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/AdminReports.css" asp-append-version="true" />
+<div class="AdminMainContainer">
+    <div id="ReportsModDialog" class="modal fade " role="dialog">
+        <div id="ReportsModContent" class="modal-dialog modal-dialog-centered modal-xl" role="document"></div>
+    </div>
+    <partial name="_AdminMenuPartial" />
+    @if (Model.Count() == 0)
+    {
+        <h3>@ViewBag.ReportsCountMessage</h3>
+    }
+    else
+    {
+        <div class="AdminTableContainer">
+            <table class="UsersDBStyle">
+                <thead class="AdminTableHeader">
+                    <tr>
+                        <th class="TableHeader" colspan="2">
+                            Имя нуждающегося
+                        </th>
+                        <th class="TableHeader">
+                            Дата создания
+                        </th>
+                        <th class="TableHeader" colspan="2">
+                            Выполнил задание
+                        </th>
+                        <th class="TableHeader">
+                            <div>
+                                <div>
+                                    Дата взятия
+                                </div>
+                                <div>
+                                    Дата выполнения
+                                </div>
+                            </div>
+                        </th>
+                        <th class="TableHeader">
+                            ID задания
+                        </th>
+                        <th class="TableHeader">
+                            Адрес
+                        </th>
+                        <th class="TableHeader">
+                            Описание задания
+                        </th>
+                        <th class="TableHeader">
+                            <div>
+                                <div>
+                                    Срочность задания
+                                </div>
+                                <div>
+                                    Статус задания
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="AdminTableBody">
+                    @foreach (PchelaMap.Models.UserWithTasks _Task in Model)
+                    {
+                        <tr>
+                            <td class="TableCell" style="border-right:none;">
+                                <div class="UserAvatar" style="background-image:url('@_Task.PhotoUrl');" onclick="ZoomAvatar(this)"></div>
+                            </td>
+                            <td class="TableCell" style="border-left:none">
+                                <a class="ChangeRoleButton">
+                                    @_Task.Name
+                                </a>
+                            </td>
+                            <td class="TableCell">
+                                @_Task._CreatedDateUtc
+                            </td>
+                            <td class="TableCell" style="border-right:none;">
+                                <div class="UserAvatar" style="background-image:url('@_Task.UserTakenPhoto');" onclick="ZoomAvatar(this)"></div>
+                            </td>
+                            <td class="TableCell" style="border-left:none;">
+                                <a class="ChangeRoleButton" asp-action="Index" asp-route-ShowSingle="true" asp-route-UserId="@_Task.UserTakenID">
+                                    @_Task.UserTakenName
+                                </a>
+                            </td>
+                            @{ string BGcolor = "";}
+                            @if (_Task._isOverdue)
+                            {
+                                BGcolor = "background-color:rgba(200,10,10,.1);";
+                            }
+                            else
+                            {
+                                BGcolor = "initial;";
+                            }
+                            <td class="TableCell" style="@BGcolor">
+                                <div>
+                                    <div>
+                                        @_Task._DateTaken
+                                    </div>
+                                    <div>
+                                        @_Task._DateDone
+                                    </div>
+                                    <div>
+                                        (@_Task._TimeInProcess)
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="TableCell">
+                                <a class="ChangeRoleButton" asp-action="ShowTaskFromTaskReport" asp-route-id="@_Task.id">
+                                    @_Task.id
+                                </a>
+                            </td>
+
+                            <td class="TableCell">
+                                @_Task.Adress
+                            </td>
+                            <td class="TableCell">
+                                <textarea rows="6" style="width:100%" readonly="readonly">@_Task.description</textarea>
+                            </td>
+                            <td class="TableCellMidleTextalign">
+                                @if (_Task.UrgentStatus == 1)
+                                {
+                                    <label class="btn btn-danger">Срочное</label>
+                                }
+                                else
+                                {
+                                    <label class="btn btn-info">Обычное</label>
+                                }
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button">
+                                        @StatusEditModel.TaskStatusDictionary[_Task.Status]
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        @foreach (var _stat in ViewBag.AllStatuses)
+                                        {
+                                            if (_Task.Status != _stat && _stat != "active")
+                                            {
+                                                @*<a class="dropdown-item" asp-action="EditStatus" asp-route-id="@_Task.id"
+                                                       asp-route-userId="@_Task.UserTakenID" asp-route-status="@_stat">
+                                                        @StatusEditModel.TaskStatusDictionary[_stat]
+                                                    </a>*@
+                                                <a class="dropdown-item" style="cursor:pointer"
+                                                   onclick="return ChangeStatus('@_Task.id', '@_Task.UserTakenID', '@_stat')">
+                                                    @StatusEditModel.TaskStatusDictionary[_stat]
+                                                </a>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            @if (_Task.ResultFiles.Count() >= 1)
+                            {
+                                <td class="TableCellMidleTextalign">
+                                    <input type="button" class="btn-success ChangeRoleButton" onclick="return OpenReportFilesModalClick('@_Task.ResultMediaFolder')" value="файлы: @_Task.ResultFiles.Count().ToString()" />
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="TableCellMidleTextalign">
+                                    <input type="button" class="btn-danger ChangeRoleButton" onclick="return OpenReportFilesModalClick('@_Task.ResultMediaFolder')" value="файлы: @_Task.ResultFiles.Count().ToString()" />
+                                </td>
+                            }
+                            <td class="TableCell" colspan="5">
+                                <textarea rows="1" style="width:100%" readonly="readonly"
+                                          placeholder="Комментарий от волонтёра">@_Task.FromUserMessage</textarea>
+                            </td>
+                            <td colspan="5" class="TableCellMidleTextalign" style="padding:0;">
+                                <textarea rows="1" placeholder="Комментарий для волонтёра"
+                                          id="MessageForUser@_Task.UserTakenID" style="width:100%;">@_Task.FromAdminMessage</textarea>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>}
+</div>
+@section Scripts{
+
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+
+}
+@section csss
+{
+
+}

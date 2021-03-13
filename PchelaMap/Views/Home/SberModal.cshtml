@@ -1,0 +1,62 @@
+﻿@using PchelaMap.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model SberModel
+<div class="modal-content">
+    <div class="modal-header" style="align-items: center;">
+        <h4 class="col-md-10 offset-md-1 modal-title">СБЕРМАРКЕТ</h4>
+        <button type="button" class="close" data-dismiss="modal" area-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <div class="modal-body">
+        @if (!Model.MyTasksButtonCall)
+        {
+        <div  style=" justify-content: center; align-items: center;">
+            <div class="alert alert-info TaskViewFormLabel">Задание взято. Вы можете перейти в Сбермаркет для оформления доставки сейчас или позже из вкладки "мои задания". </div>
+        </div>
+        }
+    <div class=" justify-content-center">
+        @if (Model.PromoCode == "")
+        {
+            @*@if (!Model.MyTasksButtonCall)
+            {
+                <span id="PromoInfoString" class="alert-danger TaskViewFormLabelSmall">Простите, в данный момент нет свободных промокодов.</span>
+            }
+            else
+            {
+                <span id="PromoInfoString" class="alert-warning TaskViewFormLabelSmall">Данное задание взято не через СберМаркет, поэтому промокод не назначен.</span>
+            }*@
+        }
+        else
+        {
+            <div>
+                <span id="PromoInfoString" class="TaskViewFormLabelSmall">нажмите на промокод, чтобы скопировать</span>
+            </div>
+            <div>
+                <div class="alert alert-light PromoLabel">Ваш промокод:</div>
+                <input type="text" id="Promo" class="alert alert-warning PromoText" onclick="CopyPromoToClipboard();" value="@Model.PromoCode" data-toggle="tooltip" data-placement="top" title="нажмите, чтобы скопировать в буфер обмена" />
+            </div>
+        }
+
+
+    </div>
+    </div>
+
+    <div class="modal-footer" style="display:initial">
+      
+        <input type="button" class="btn btn-success btn-block ModalSberButton" onclick="SberDirectLink(event)" value="ПЕРЕЙТИ НА СБЕРМАРКЕТ"/>
+        <input type="button" class="btn btn-secondary btn-block ModalSberCancelButton" data-dismiss="modal" value="ОПЛАТИТЬ ПОЗЖЕ" />
+    </div>
+</div>
+ @if (!Model.MyTasksButtonCall)
+ { 
+<script>
+    $(this).on('hidden.bs.modal', function(event) {
+                 window.location.href = '/Home';
+        event.stopPropagotion();
+    });
+</script>
+}

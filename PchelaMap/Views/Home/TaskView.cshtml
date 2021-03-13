@@ -1,0 +1,137 @@
+﻿@using PchelaMap.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model UserWithTasks
+<div class="modal-content">
+
+    <div class="modal-header" style="align-items: center;">
+        <h4 class="col-md-10 offset-md-1 modal-title">ИНФОРМАЦИЯ О ЗАДАНИИ</h4>
+        <button type="button" class="close" data-dismiss="modal" area-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+
+    <div class="modal-body">
+        <div class="row justify-content-center">
+        @if (Model.UrgentStatus == 1)
+        {
+        <div class="alert alert-danger TaskViewFormLabel">Это срочное задание, на него отводится 24 часа.</div>
+        }
+        else
+        {
+
+        }
+        </div>
+        <div class="row" style=" justify-content: center; align-items: center;">
+
+            <div class="userTaskViewAvatar" style="background-image:url('@Model.PhotoUrl')">
+            </div>
+            <span class="NameLabel">@Model.Name</span>
+
+        </div>
+        <div class="row TaskViewFormRow">
+            <div class="col-md-12 d-flex flex-column flex-wrap align-content-center">
+                <textarea rows="9" style="width:100%" readonly="readonly">@Model.description</textarea>
+            </div>
+        </div>
+
+        <div class="row TaskViewFormRow  justify-content-center">
+        @if (Model.NeedsCar == 1)
+        {
+            <div class="alert alert-warning TaskViewFormLabel">Для выполнения нужен автомобиль</div> }
+        else
+        {
+            <div class="alert alert-secondary TaskViewFormLabel">Для выполнения автомобиль не нужен</div>
+        }
+        </div>
+
+        @{ var UserData = UserManager.GetUserAsync(User).Result;}
+        <div class="row TaskViewFormRow">
+            <div class="col-md-12 d-flex flex-column flex-wrap align-content-center">
+            <address class="AdressDiv">@Html.DisplayFor(model => model.Adress)</address>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <a style="text-decoration:none;" href="https://yandex.ru/maps/?rtext= @UserData.UserCoordinateX,@UserData.UserCoordinateY~@Model.CoordinateX,@Model.CoordinateY&rtt=auto">
+                    <input type="button" class="btn btn-info btn-block BuiltRouteButton" value="Построить маршрут" />
+                </a> }
+            else
+            {
+            <a style="text-decoration:none;" href="https://yandex.ru/maps/?rtext= ~@Model.CoordinateX,@Model.CoordinateY&rtt=auto">
+                <input type="button" class="btn btn-info btn-block BuiltRouteButton" value="Построить маршрут" />
+            </a>
+            }
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer" style="display:initial">
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        @if (User.IsInRole("ban"))
+        {
+        <input type="button" class="btn btn-danger btn-block TakeTaskButton" value="Вы не можете брать задания" /> }
+        else
+        {
+            if (UserData.UserAdress == null || UserData.PhoneNumber == null)
+            {
+            <a style="text-decoration:none;" asp-area="Identity" asp-page="/Account/Manage/Index">
+                <input type="button" class="btn btn-danger btn-block TakeTaskButton" value=" Заполните профиль" />
+            </a>
+            }
+            else
+            { @*if (UserData.Id != Model.CreatorID){*@
+                if (Model.TaskAlreadyTaken)
+                                                    {
+                            <a style="text-decoration:none;" asp-controller="Home" asp-action="UserTakenTaskEdit" asp-route-id="@Model.id">
+                                <input type="button" class="btn btn-success btn-block TakeTaskButton" value="Добавить отчёт о выполнении задания" />
+                            </a>
+                }
+                else
+                {
+                    if (Model.UrgentStatus == 0 && !Model.LimitOfTasksReached)
+                    {
+                            <input type="button" onclick="SberModalClick('@Model.id')" class="btn btn-block SberTakeTaskButton" />
+
+                            <input type="button" onclick="TakeTaskClick('@Model.id')" class="btn btn-warning btn-block TakeTaskButton" value="Помочь" />
+                            @*<a style="text-decoration:none;" asp-controller="Home" asp-action="TakeTask" asp-route-id="@Model.id">
+                                <input type="button" class="btn btn-warning btn-block TakeTaskButton" value="Помочь" />
+                            </a>*@
+                    }
+                    if (Model.UrgentStatus == 1 && !Model.LimitOfUrgentTasksReached && !Model.LimitOfTasksReached)
+                    {
+                        <input type="button" onclick="SberModalClick('@Model.id')" class="btn btn-block SberTakeTaskButton" />
+                        <input type="button" onclick="TakeTaskClick('@Model.id')" class="btn btn-warning btn-block TakeTaskButton" value="Помочь" />
+                        @*<a style="text-decoration:none;" asp-controller="Home" asp-action="TakeTask" asp-route-id="@Model.id">
+                            <input type="button" class="btn btn-warning btn-block TakeTaskButton" value="Помочь" />
+                        </a>*@
+                    }
+                    if (Model.UrgentStatus == 0 && Model.LimitOfTasksReached)
+                    {
+                        <input type="button" class="btn btn-secondary btn-block TakeTaskButton" data-dismiss="modal" value="Вы взяли максимум заданий" />
+                    }
+                    if (Model.UrgentStatus == 1 && Model.LimitOfUrgentTasksReached || Model.UrgentStatus == 1 && Model.LimitOfTasksReached)
+                    {
+                        <input type="button" class="btn btn-secondary btn-block TakeTaskButton" data-dismiss="modal" value="Вы взяли максимум заданий" />
+                    }
+                }
+                @*}
+                else
+                {
+                    <input type="button" class="btn btn-secondary btn-block TakeTaskButton" data-dismiss="modal" value="Вы не можете взять своё задание" />
+                }*@
+            }
+
+        }
+    }
+    </div>
+    <div id="LoaderContainer" class="LoaderContainer" onclick="LoaderContainerClick(event);">
+        <div class="LoaderDiv">
+            <span class="LoaderText">Пожалуйста, подождите</span>
+            <img class="LoaderImage" src="~/Images/pchl.gif" />
+        </div>
+    </div>
+</div>
