@@ -1,2 +1,2 @@
-# WebSite
-Asp core website with admin page
+# WebMap
+Asp core interactive web map
