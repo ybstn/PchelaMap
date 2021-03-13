@@ -1,0 +1,80 @@
+﻿
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model MyDoneTasksView
+    <link rel="stylesheet" href="~/css/MyTasks.css" />
+<div class="MyTasksMenuButtonsContainer">
+    <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTakenTasks">
+        <input type="button" class="btn MyTasksMenuButton" value="Взятые (@ViewBag.UserTakenTasksCount)" />
+    </a>
+    <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyDoneTasks">
+        @{ int DoneTasksCount = @Model.CreatedDoneTasks.Count() + @Model.TakenDoneTasks.Count(); }
+        <input type="button" class="btn MyTasksMenuButtonActive" value="Выполненные (@DoneTasksCount)" />
+    </a>
+    <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTasks">
+        <input type="button" class="btn MyTasksMenuButton" value="Созданные (@ViewBag.UsersTasksCount)" />
+    </a>
+</div>
+@if ((@Model.CreatedDoneTasks.Count() + @Model.TakenDoneTasks.Count()) == 0)
+{
+    <h3>Нет выполненных заданий</h3>
+}
+else
+{
+    <h5>Взятые:</h5>
+    if (@Model.TakenDoneTasks.Count() == 0)
+    {
+        <h6>нет выполненных заданий</h6>
+    }
+    else
+    {
+      @foreach (PchelaMap.Models.UserWithTasks _Task in Model.TakenDoneTasks)
+      {
+    <a class="TaskView" asp-controller="Home" asp-action="UserTakenTaskEdit" asp-route-id="@_Task.id" asp-route-ActiveMenuButton="done">
+        <span class="UserMyTasksAvatar" style="background-image:url(' @_Task.PhotoUrl')"></span>
+        <div class="TaskInfo">
+            <span class="TaskDescriptionMyTasks">@_Task.description</span>
+            <span>@_Task.Adress</span>
+            <span>@_Task.Phone</span>
+            <div class="d-flex flex-row flex-wrap ">
+            <span class="alert alert-success">Выполнено</span>
+            @if (_Task.UrgentStatus == 1)
+            {
+                <span class="alert alert-danger">Срочное задание</span>
+            }
+            </div>
+        </div>
+    </a>
+      }
+    }
+    <h5>Созданные:</h5>
+      if (Model.CreatedDoneTasks.Count()==0)
+    {
+            <h6>нет выполненных заданий</h6>
+    }
+    else
+    {
+      @foreach (PchelaMap.Models.UserWithTasks _Task in Model.CreatedDoneTasks)
+        {
+            <a class="TaskView" asp-controller="Home" asp-action="UserTakenTaskEdit" asp-route-id="@_Task.id">
+                <span class="UserMyTasksAvatar" style="background-image:url(' @_Task.PhotoUrl')"></span>
+                <div class="TaskInfo">
+                    <span class="TaskDescriptionMyTasks">@_Task.description</span>
+                    <span>@_Task.Adress</span>
+                    <span>@_Task.Phone</span>
+                    <div class="d-flex flex-row flex-wrap ">
+                        <span class="alert alert-success">Выполнено</span>
+                        @if (_Task.UrgentStatus == 1)
+                        {
+                            <span class="alert alert-danger">Срочное задание</span>
+                        }
+                     </div>
+                </div>
+            </a>
+        }
+
+    }
+}

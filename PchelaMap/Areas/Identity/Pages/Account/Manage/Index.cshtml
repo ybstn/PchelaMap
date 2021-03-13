@@ -1,0 +1,85 @@
+@page
+@model IndexModel
+@{ ViewData["Title"] = "Профиль";
+    ViewData["ActivePage"] = ManageNavPages.Index; }
+<link rel="stylesheet" href="~/css/Profile.css" />
+<h5 class="ProfileHeaderLabel">
+    @ViewData["Title"]
+    <a asp-controller="Home" asp-action="Index" class="close CloseEditProfileButton">
+        <input type="button" value="&times;" />
+    </a>
+</h5>
+<partial name="_StatusMessage" model="Model.StatusMessage" />
+<div class="row">
+    @* <div class="col-md-3">
+            <partial name="_ManageNav" />
+        </div>*@
+    <div class="col-md-12" style="text-align: left;">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-lg-6 d-flex flex-row flex-wrap align-content-center ">
+                        <div style="margin-bottom:2vh;" class="col-md-6 d-flex flex-column flex-wrap align-content-center">
+                            <div class="userProfileSettingsAvatar" onclick="UserBigAvatarClick()" style="background-image:url('@Model.Input.UserPhoto');">
+                            </div>
+                            <input type="file" class="inputFile" onchange="this.form.submit()" id="file" name="uploadedFile" accept="image/jpeg, image/png, image/gif" />
+                            <label class="btn btn-light inputFileLabel" id="fileInputLabel" for="file">Загрузить файл</label>
+                        </div>
+                        <div class="col-md-6 d-flex flex-column flex-wrap justify-content-center align-content-center ">
+                            <div style="margin-bottom:2vh;">
+                                <label asp-for="Input.UserName">Имя</label>
+                                <input id="UserName" asp-for="Input.UserName" class="form-control EditProfileTextInput" style="min-width: 15vw;" />
+                                <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                            </div>
+                            <div style="margin-bottom:2vh;">
+                                <label asp-for="Input.PhoneNumber">Номер телефона</label>
+                                <input type="tel" id="UserPhoneNumber" asp-for="Input.PhoneNumber" class="form-control EditProfileTextInput"
+                                       placeholder="89991112233" />
+                                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                            </div>
+                            <div style="margin-bottom:2vh;">
+                                <span>Есть автомобиль: </span>
+                                <input type="checkbox" data-toggle="toggle" asp-for="Input.HasCar"
+                                       data-onstyle="success" data-offstyle="secondary"
+                                       data-on="да" data-off="нет"
+                                       id="CarCheckBox" />
+                            </div>
+                            <div style="margin-bottom:2vh;">
+                                <span>Баллы: </span>
+                                <input id="UserPoints" readonly="readonly" asp-for="Input.UserPoints" class="EditProfileTextInput" style="cursor:default; border:none;" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 d-flex flex-column flex-wrap align-content-center ">
+                        <textarea id="UserAdress" asp-for="Input.UserAdress" class="form-control UserAdress" readonly="readonly" rows="1">Input.UserAdress</textarea>
+                        <span asp-validation-for="Input.UserAdress" class="text-danger"></span>
+                        <div id="UserLocationMap" class="UserLocationMapContainer"></div>
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:2vh;">
+                    <div class="col-md-12 d-flex justify-content-center">
+                        <button id="update-profile-button" type="submit" class="btn btn-warning EditProfileButton">Сохранить</button>
+                        <button id="update-profile-button" asp-controller="Home" asp-action="Index" class="btn btn-danger EditProfileButton">Отмена</button>
+                        @if (!User.IsInRole("ban"))
+                        {
+            <a id="delete" asp-page="DeletePersonalData" class="btn btn-light EditProfileButton">Удалить профиль</a>}
+                    </div>
+                </div>
+
+            </div>
+            <input type="hidden" id="UserCoordinates" asp-for="Input.UserCoordinates" class="form-control" />
+            <input type="hidden" id="UserID" value="@ViewData["UserId"]" />
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+    <script type="text/javascript" src="~/js/UserLocationMap.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}

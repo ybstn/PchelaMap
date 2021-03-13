@@ -1,0 +1,64 @@
+﻿
+@model CreateTaskModel
+    <link rel="stylesheet" href="~/css/EditTask.css" />
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="col-md-10 offset-md-1 modal-title">
+                Редактирование задания
+
+            </span>
+            <a class="close CloseButton">
+                <input onclick="return window.history.back();" type="button" value="&times;" />
+            </a>
+        </div>
+        <form onsubmit="return AddHelpPointValidateDescription();" asp-action="EditHelpPoint" asp-controller="Home" method="post">
+            <div class="modal-body">
+                <div class="col-md-12 TaskAddFormRow">
+                    <textarea id="TaskDescription" asp-for="@Model.TaskDescription" rows="5" style="width:100%"
+                              placeholder="Опишите, какая помощь Вам необходима"></textarea>
+                </div>
+                <div class="row TaskAddFormRow" style="justify-content:center; align-items:center;">
+                    <span class="TaskAddFormLabel">СРОЧНОЕ ЗАДАНИЕ:</span>
+                    <input type="checkbox" data-toggle="toggle" asp-for="@Model.Urgentability"
+                           data-onstyle="danger" data-offstyle="warning"
+                           data-on="да" data-off="нет"
+                           id="CarCheckBox" />
+                </div>
+                <div class="row TaskAddFormRow" style="justify-content:center; align-items:center;">
+                    <span class="TaskAddFormLabel">ДЛЯ ВЫПОЛНЕНИЯ ЗАДАНИЯ НУЖЕН АВТОМОБИЛЬ: </span>
+                    <input type="checkbox" data-toggle="toggle" asp-for="@Model.NeedsCar"
+                           data-onstyle="success" data-offstyle="secondary"
+                           data-on="да" data-off="нет"
+                           id="CarCheckBox" />
+                </div>
+                <div class="col-md-12 TaskAddFormRow">
+                    <div class="form-group">
+                        <input id="UserAdress" asp-for="@Model.UserAdress" class="form-control UserAdress" readonly="readonly" />
+                    </div>
+                </div>
+                <div class="col-md-12 TaskAddFormRow">
+                    <div id="UserLocationMap" class="UserLocationMapContainer"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+               
+                    <input type="submit"
+                           class="btn btn-lg bg-warning EditTaskButton"
+                           value="Сохранить" />
+                    <input type="button"
+                           class="btn btn-lg bg-danger EditTaskButton"
+                           value="Отмена" onclick="return window.history.back();" />
+              
+            </div>
+            <input type="hidden" id="UserCoordX" name="UserCoordX" value="@Model.UserCoordX" asp-for="@Model.UserCoordX" />
+            <input type="hidden" id="UserCoordY" value="@Model.UserCoordY" asp-for="@Model.UserCoordY" />
+            <input type="hidden" id="UserCoordinates" asp-for="@Model.UserCoordinates" class="form-control" />
+        </form>
+    </div>
+    @section Scripts{
+        <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+        <script type="text/javascript" asp-append-version="true" src="~/js/EditTaskPoint.js"></script>
+    }
+

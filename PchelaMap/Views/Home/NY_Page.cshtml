@@ -1,0 +1,106 @@
+﻿@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model IEnumerable<PchelaMap.Models.UserWithTasks>
+<link type="text/css" rel="stylesheet" href="~/css/NY_Page.css" />
+<div class="MainPanel">
+    <div class="MainHeader">@ViewData["MainHeader"]</div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var UserData = UserManager.GetUserAsync(User).Result;
+        if ((UserData.UserAdress == null || UserData.UserAdress == "") || UserData.PhoneNumber == null || !UserData.EmailConfirmed)
+        {
+            <h3>Пожалуйста, заполните профиль, иначе Вы не сможете брать задания.</h3>
+        }
+        else
+        {
+            @if (Model.Count() == 0)
+            {
+                @if (ViewBag.Is_NY_SearchPage == "Yes")
+                {
+                    <h3>По данному запросу ничего не найдено.</h3>
+                }
+                else
+                {
+                    <h3>Мы уже работаем над списком желаний. Ждите.</h3>
+                }
+
+            }
+            else
+            {
+                <div class="Disclaimer">
+
+                    <div class="DisclaimerPart">Напоминаем, что карта волонетров "Пчела" является посреднической площадкой.</div>
+                    <div class="DisclaimerPart">Время и место передачи подарка согласовываются между волонтером и подопечной (сторонами) самостоятельно.</div>
+                    <div class="DisclaimerPart">Срок акции до 31 января.</div>
+
+                </div>
+                <form asp-action="NY_TasksSearch" asp-controller="Home" method="post" enctype="multipart/form-data">
+                    <div class="row NYSearchFormRow">
+                        <div class="my-auto">
+                            <span class="NYSearchFormLabel" style="padding:0.5vh 0;">ПОИСК ПО АДРЕСУ:</span>
+                        </div>
+                        <div>
+                            @{ string searchField = ""; }
+                            @if (ViewData["searchFieldValue"] != null)
+                            {
+                                @if (ViewData["searchFieldValue"].ToString() != "")
+                                {
+                                    searchField = ViewData["searchFieldValue"].ToString();
+                                }
+                                else
+                                {
+                                    searchField = "";
+                                }
+                            }
+                            <input type="text" id="UserAdress" name="AdressString" placeholder="@searchField" class="form-control NYUserAdress" />
+                        </div>
+                        @if (ViewBag.Is_NY_SearchPage == "Yes")
+                        {
+                            <input type="submit" class="btn-secondary NYsearchButt" value="отмена" />
+                        }
+                        else
+                        {
+                            <input type="submit" class="btn-secondary NYsearchButt" value="поиск" />
+                        }
+                    </div>
+                </form>
+                @if (Model.First<UserWithTasks>().LimitOfUrgentTasksReached || Model.First<UserWithTasks>().LimitOfTasksReached)
+                {
+                    <div class="row">
+                        <div class="container-fluid">
+                            <div class="alert alert-danger">Вы взяли максимум заданий, поэтому не сможете взять ни одно из представленных ниже заданий.</div>
+                        </div>
+                    </div>
+                }
+                @foreach (PchelaMap.Models.UserWithTasks _Task in Model)
+                {
+                    <div class="TaskView">
+                        <span class="UserMyTasksAvatar" style="background-image:url(' @_Task.PhotoUrl')"></span>
+                        <div class="TaskInfo">
+                            <span class="NYtaskAdress">@_Task.Adress</span>
+                            <span class="NYtaskName">@_Task.Name</span>
+                            <span class="TaskDescriptionMyTasks">@_Task.description</span>
+                        </div>
+                          @if (!Model.First<UserWithTasks>().LimitOfUrgentTasksReached && !Model.First<UserWithTasks>().LimitOfTasksReached)
+                          {
+                        <input type="button" onclick="NYTakeTaskClick('@_Task.id')" class="btn NYTakeTaskButton" value="ВЫПОЛНИТЬ" />
+                          }
+                    </div>
+                }
+                <div id="LoaderContainer" class="LoaderContainer" onclick="NYLoaderContainerClick(event);">
+                    <div class="LoaderDiv">
+                        <span class="LoaderText">Пожалуйста, подождите</span>
+                        <img class="LoaderImage" src="~/Images/pchl.gif" />
+                    </div>
+                </div>
+            }
+        }
+    }
+    else
+    {
+        <h3>Пожалуйста, зарегистрируйтесь, иначе Вы не сможете брать задания.</h3>
+    }
+</div>

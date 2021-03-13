@@ -1,0 +1,51 @@
+﻿@{ string OtherReason = "Другая причина:";}
+@using PchelaMap.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model UserWithTasks
+    <div class="modal-content" style="padding:1vw;">
+        <form id="RefuseForm" class="was-validated" asp-action="RefuseFromTask" asp-controller="Home" asp-route-id="@Model.id" method="post" enctype="multipart/form-data">
+            <div class="modal-header" style="align-items: center;">
+
+                <h4 class="col-md-10 offset-md-1 modal-title">@RefuseReasons.header</h4>
+
+                <button type="button" class="close" data-dismiss="modal" area-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <div class="modal-body d-flex flex-column flex-wrap align-content-center">
+
+                <h5>Укажите причину отказа от задания:</h5>
+               
+                    <div class="btn-group-vertical btn-group-toggle" data-toggle="buttons">
+                        @{ int reasonid = 0;}
+                        @foreach (string _reason in RefuseReasons.RefuseReasonsDict.Values.ToList())
+                        {
+                            <label class="btn btn-light btn-block ReasonLabel" onclick="HideTextBox('@_reason');">
+                                <input type="radio" autocomplete="off" name="RefuseReasonRadio" required />@_reason                
+                            </label>
+                            reasonid++;
+                        }
+                        <label class="btn btn-light btn-block ReasonLabel" onclick="OpenTextBox('@OtherReason');">
+                            <input type="radio" autocomplete="off" name="RefuseReasonRadio" required/>@OtherReason
+                        </label>
+                        <textarea class="col-md-12" id="CustomReasonTextField" rows="2" for="ReasonText" name="CustomReasonText" style="display:none"></textarea>
+                        
+                    </div>
+               <span id="alert" class="alert alert-danger" style="display:none">Выберите один из вариантов, пожалуйста</span>
+                <br />
+                <h5>@RefuseReasons.bottom_header</h5>
+            </div>
+
+            <div class="modal-footer" style="display:initial">
+               
+                <input type="submit"  class="btn btn-danger" value="Подтвердить" />
+                <input type="button" class="btn btn-warning" data-dismiss="modal" value="Отменить" />
+                <input  type="hidden" id="ReasonValue" name="ReasonValue" value="" />
+            </div>
+           
+        </form>
+    </div>

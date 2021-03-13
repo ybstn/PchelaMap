@@ -1,0 +1,112 @@
+﻿<div class="MainButtonsContainer">
+    <div class="btn-group dropdown Link_AdminMenu">
+        @{ string UsersButtonStyle;
+            string UsersDropdownStyle;}
+        @if (ViewBag.PageActive == "users")
+        {
+            UsersButtonStyle = "AdminMenuButtonActive";
+            UsersDropdownStyle = "AdminMenuDropDownButtonActive";
+        }
+        else
+        {
+            UsersButtonStyle = "AdminMenuButton";
+            UsersDropdownStyle = "AdminMenuDropDownButton";
+        }
+        <a class="btn @UsersButtonStyle" asp-controller="Admin" asp-action="Index" asp-route-active="all">
+            Пользователи (@ViewBag.UsersCount)
+        </a>
+        <button class="btn dropdown-toggle dropdown-toggle-split @UsersDropdownStyle" data-toggle="dropdown" type="button">
+            <span class="sr-only"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Index" asp-route-active="admin">Администраторы (@ViewBag.UsersAdminCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Index" asp-route-active="moder">Модераторы (@ViewBag.UsersModerCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Index" asp-route-active="user">Пользователи (@ViewBag.UsersUserCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Index" asp-route-active="ban">Забаненные (@ViewBag.UsersBanCount)</a>
+
+        </div>
+    </div>
+    <div class="btn-group dropdown Link_AdminMenu">
+        @{ string TaskButtonStyle;
+            string TaskDropdownStyle;}
+        @if (ViewBag.PageActive == "tasks")
+        {
+            TaskButtonStyle = "AdminMenuButtonActive";
+            TaskDropdownStyle = "AdminMenuDropDownButtonActive";
+        }
+        else
+        {
+            TaskButtonStyle = "AdminMenuButton";
+            TaskDropdownStyle = "AdminMenuDropDownButton";
+        }
+
+        <a class="btn @TaskButtonStyle" asp-controller="Admin" asp-action="Tasks" asp-route-active="all">
+            Задания (@ViewBag.TasksCount)
+        </a>
+        <button class="btn dropdown-toggle dropdown-toggle-split @TaskDropdownStyle" data-toggle="dropdown" type="button">
+            <span class="sr-only"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Tasks" asp-route-active="active">Активные (@ViewBag.TasksActiveCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Tasks" asp-route-active="NY">Для акции (@ViewBag.TasksNYCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="UsersTasks" asp-route-active="in_progress">На выполнении (@ViewBag.TasksInProcessCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="UsersTasks" asp-route-active="done">Выполненные (@ViewBag.TasksDoneCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Tasks" asp-route-active="moderation">На модерации (@ViewBag.TasksOnModerationCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="Tasks" asp-route-active="closed">Отменённые (@ViewBag.TasksStopedCount)</a>
+        </div>
+
+    </div>
+    <div class="btn-group dropdown Link_AdminMenu">
+        @{ string ReportsButtonStyle;
+            string ReportsDropdownStyle;}
+        @if (ViewBag.PageActive == "reports")
+        {
+            ReportsButtonStyle = "AdminMenuButtonActive";
+            ReportsDropdownStyle = "AdminMenuDropDownButtonActive";
+        }
+        else
+        {
+            ReportsButtonStyle = "AdminMenuButton";
+            ReportsDropdownStyle = "AdminMenuDropDownButton";
+        }
+        <a class="btn  @ReportsButtonStyle" asp-controller="Admin" asp-action="ReportsForModeration" asp-route-active="all">
+            Отчёты (@ViewBag.ReportsTotalCount)
+        </a>
+        <button class="btn dropdown-toggle dropdown-toggle-split @ReportsDropdownStyle" data-toggle="dropdown" type="button">
+            <span class="sr-only"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="ReportsForModeration" asp-route-active="moderation">На модерации (@ViewBag.ReportsOnModerationCount)</a>
+            <a class="dropdown-item AdminMenuDropDownItem" asp-controller="Admin" asp-action="ReportsForModeration" asp-route-active="stoped">Отклонённые (@ViewBag.ReportsRefusedCount)</a>
+        </div>
+    </div>
+    <div class="btn-group Link_AdminMenu">
+
+        @{ string UploadButtonStyle;}
+        @if (ViewBag.PageActive == "export")
+        {
+            UploadButtonStyle = "AdminMenuButtonActive";
+        }
+        else
+        {
+            UploadButtonStyle = "AdminMenuButton";
+        }
+        <a class="btn @UploadButtonStyle" asp-controller="Admin" asp-action="ExportData">
+            Выгрузка
+        </a>
+    </div>
+    <div class="btn-group Link_AdminMenu">
+        @{ string PromoButtonStyle;}
+        @if (ViewBag.PageActive == "promo")
+        {
+            PromoButtonStyle = "AdminMenuButtonActive";
+        }
+        else
+        {
+            PromoButtonStyle = "AdminMenuButton";
+        }
+        <a class="btn @PromoButtonStyle" asp-controller="Admin" asp-action="Promo">
+            Промо (@ViewBag.OpenPromosCount)
+        </a>
+    </div>
+</div>

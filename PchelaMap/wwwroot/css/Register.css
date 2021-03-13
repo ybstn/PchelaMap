@@ -1,0 +1,170 @@
+.MainPanel
+{
+  min-height: 100%;
+  width: 100%;
+  background-color:white;
+  position: relative;
+  background-image: url('../../Images/TextPageBackgound.png');
+  background-size: cover;
+    
+}
+.MainHeader
+{
+    color: white;
+    z-index: 1;
+    background-color: rgba(255, 183, 187,1);
+    width: 100%;
+    font-size: 1.2vw;
+    text-align: left;
+    padding: 4px 5.5vw;
+}
+.TextDiv, .TextDivBold
+{
+    display: block;
+   font-weight: 300;
+   font-size: 1vw;
+}
+.TextDivBold
+{
+  font-weight: 400;
+}
+.ExternalLoginsButton
+{
+  margin: 0 0.5vw;
+    border-radius: 13px;
+    font-size: 1.2vw;
+text-transform: uppercase;
+/* background-color: rgba(255, 183, 187,1);
+color: #634648; */
+}
+.Disclaimer
+{
+    display: block;
+    border-radius: 13px;
+   font-size: 1.4vw;
+   color: black;
+   user-select: none;
+   background-color: rgba(255, 183, 187,1);
+   padding: 0.5vh 1vw;
+   margin: 4vh 4.5vw;
+
+}
+.PrivacyCheckBoxLabel
+{
+  user-select: none;
+  cursor:pointer;
+  color: white;
+}
+.PrivacyCheckBox
+{
+    transform: scale(1.5);
+}
+.TextList
+{
+    margin: 1vh 0 1vh 0;
+    display: block;
+   list-style-type: disc;
+   text-align: left;
+}
+.TextSubList
+{
+  list-style-type: circle;
+}
+@media screen and (max-width:1280px)
+{
+    .MainHeader
+    { padding: 4px 6.5vw;
+    }
+    .TextDiv
+    {
+    }
+    .Disclaimer
+    {
+        padding: 0.5vh 1vw;
+        margin: 4vh 5.5vw;
+    }
+}
+@media screen and (max-width:1024px)
+{
+    .MainHeader
+    { padding: 4px 4.5vw;
+    }
+    .TextDiv
+    {
+    }
+    .Disclaimer
+    {
+        padding: 0.5vh 1vw;
+        margin: 4vh 3.5vw;
+    }
+   
+}
+@media screen and (max-width:800px)
+{
+
+  .MainHeader
+  {
+    font-size: 2.6vw;
+    padding: 4px 8.5vw;
+  }
+  .TextDiv, .TextDivBold
+    {
+        font-size: 2.4vw;
+    }
+    .ExternalLoginsButton
+    {
+        font-size: 2.6vw;
+    }
+    .Disclaimer
+    {
+        font-size: 2.4vw;
+        padding: 0.5vh 1vw;
+        margin: 4vh 2.5vw;
+    }
+    
+}
+@media screen and (max-width:455px)
+{
+.MainHeader
+{
+  font-size: 3.4vw;
+  padding: 4px 15.5vw;
+}
+  .TextDiv, .TextDivBold
+  {
+    font-size: 3.2vw;
+  }
+  .ExternalLoginsButton
+  {
+      font-size:3.4vw;
+  }
+  .Disclaimer
+  {
+    font-size: 3.2vw;
+      padding: 0.5vh 1vw;
+      margin: 4vh 2.5vw;
+  }
+}
+
+@media screen and (max-height:455px)
+{
+    .MainHeader
+    {
+      font-size: 3.4vh;
+    padding: 4px 9.5vw;
+    }
+  .TextDiv, .TextDivBold 
+  {
+    font-size:  3.2vh;
+  }
+  .ExternalLoginsButton
+  {
+      font-size:3.4vh;
+  }
+  .Disclaimer
+  {
+    font-size:  3.2vh;
+      padding: 0.5vh 1vw;
+      margin: 4vh 6.5vw;
+  }
+}

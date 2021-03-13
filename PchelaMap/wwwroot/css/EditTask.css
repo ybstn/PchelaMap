@@ -1,0 +1,88 @@
+/* Edit Task View  part START */
+.TaskLocationMapContainer
+{
+  width:100%;
+  height:40vh;
+}
+.EditTaskButton
+{
+  margin: 0;
+  width: 100%;
+  border-radius: 13px;
+  min-width: 12vw;
+  padding: 0.8vw 2vw;
+  pointer-events: all;
+}
+.EditTaskButton:hover
+{
+  text-decoration: none;
+}
+.TaskAddFormRow
+{
+  margin-top: 2vh;
+}
+.TaskAddFormLabel
+{
+}
+.UserLocationMapContainer
+{
+  width:100%;
+  height:49vh;
+}
+.CloseButton
+{   
+     top: 0.9em;
+    right:1vw;
+    position: absolute;
+}
+/* Edit Task View  part END */
+@media screen and (max-width:800px){
+/* Edit Task View  part START */
+.UserLocationMapContainer
+  {
+    height:48vh;
+  }
+  .CloseButton
+{   top: 0.25em;
+}
+.TaskAddFormRow {
+    margin-top: 1vh;
+}
+/* Edit Task View  part END */
+  
+  }
+  @media screen and (max-width:480px){
+   
+ /* Edit Task View  part START */
+
+ .CreateTaskButton
+{
+  padding: 3vw 2vw;
+}
+.TaskAddFormLabel
+{
+  width: 50%;
+  font-size: 0.7em;
+}
+.TaskAddFormRow
+{
+  margin-top: 0.5vh;
+}
+.UserAdress
+  {
+    font-size: 0.7em;
+  }
+  .UserLocationMapContainer
+  {
+    height:36vh;
+  }
+  .CloseButton
+  {
+      top:0.3em;
+      right:1.5vw;
+      font-size: 1.2em;
+  }
+ /* Edit Task View  part END */
+  
+  
+  }

@@ -1,0 +1,265 @@
+﻿@using PchelaMap.Areas.Identity.Data
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model UserWithTasks
+<link rel="stylesheet" href="~/css/MyTasks.css" />
+
+<div id="RefuseTaskModDialog" class="modal modal-wide fade RefuseTaskModDialog" role="dialog">
+    <div id="RefuseTaskModContent" class="modal-dialog modal-dialog-centered" role="document">
+        <partial name="TaskRefuseModal" />
+    </div>
+</div>
+
+<div class="MyTasksMenuButtonsContainer">
+    @if (@ViewBag.ActiveMenuButtonName == "taken")
+    {
+        <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTakenTasks">
+            <input type="button" class="btn MyTasksMenuButtonActive" value="Взятые (@ViewBag.UserTakenTasksCount)" />
+        </a>
+    }
+    else
+    {
+        <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTakenTasks">
+            <input type="button" class="btn MyTasksMenuButton" value="Взятые (@ViewBag.UserTakenTasksCount)" />
+        </a>
+    }
+    @if (@ViewBag.ActiveMenuButtonName == "done")
+    {
+        <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyDoneTasks">
+            <input type="button" class="btn MyTasksMenuButtonActive" value="Выполненные (@ViewBag.UserDoneTasksCount)" />
+        </a>
+    }
+    else
+    {
+        <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyDoneTasks">
+            <input type="button" class="btn MyTasksMenuButton" value="Выполненные (@ViewBag.UserDoneTasksCount)" />
+        </a>
+    }
+    @if (@ViewBag.ActiveMenuButtonName == "my")
+    {
+        <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTasks">
+            <input type="button" class="btn  MyTasksMenuButtonActive" value="Созданные (@ViewBag.UsersTasksCount)" />
+        </a>
+    }
+    else
+    {
+        <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTasks">
+            <input type="button" class="btn  MyTasksMenuButton" value="Созданные (@ViewBag.UsersTasksCount)" />
+        </a>
+    }
+
+
+</div>
+<div class="row">
+    <div class="col-lg-2 NameAvatarDiv">
+        <h5 class="MyTasksTaskEditLabel">Пользователь</h5>
+        <div class="UserAvatar" onclick="ZoomAvatar(this);" style="background-image:url('@Model.PhotoUrl');">
+        </div>
+        <h6 class="TaskViewName">@Model.Name</h6>
+
+    </div>
+    <div class="col-lg-2 InfoBlock">
+        <h5 class="MyTasksTaskEditLabel">Контакты</h5>
+        <a class="ContactLink" href="tel:@Model.Phone">@Model.Phone</a>
+        <a class="ContactLink" href="mailto: @Model.Email">@Model.Email</a>
+    </div>
+    <div class="col-lg-4 InfoBlock">
+        <h5 class="MyTasksTaskEditLabel">Адрес</h5>
+        <div class="d-flex flex-column flex-wrap align-content-center">
+            <address class="MyTasksAdress">@Html.DisplayFor(model => model.Adress)</address>
+            @if (Model.NeedsCar == 1)
+            {
+                <div class="alert alert-warning TaskViewLabel">Для выполнения нужен автомобиль</div>
+            }
+            else
+            {
+                <div class="alert alert-light TaskViewLabel">Для выполнения автомобиль не нужен</div>
+            }
+            @{ var UserData = UserManager.GetUserAsync(User).Result;}
+            <a href="https://yandex.ru/maps/?rtext= @UserData.UserCoordinateX,@UserData.UserCoordinateY~@Model.CoordinateX,@Model.CoordinateY&rtt=auto">
+                <input type="button" class="btn btn-light MyTaskRouteButton" value="Построить маршрут" />
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-4 InfoBlock">
+        <h5 class="MyTasksTaskEditLabel">Описание задания</h5>
+        <textarea rows="6" style="width:100%" readonly="readonly">@Model.description</textarea>
+    </div>
+</div>
+<br />
+@if (Model.TaskOwner == "other")
+{
+    <div class="row">
+        <div class="col-md-12 d-flex flex-column flex-wrap align-content-center">
+
+            @if (Model.Status == "active" || Model.Status == "StopedOnModeration")
+            {
+                <h4>Завершение задания</h4>
+                <h6>Загрузите фото (.jpeg/.png), видео(.mp4/.mov) или pdf файл, чтобы подтвердить выполнение задания. Максимальный размер одного файла: 100мб. Максимальный общий размер отчёта: 200мб.</h6>
+                <h6>Использовано @ViewBag.foldersize мб из 200 мб</h6>
+            }
+            @if (Model.Status == "done")
+            {
+                <h4>Файлы отчёта</h4>
+            }
+            @if (ViewBag.message != "" && ViewBag.message != null)
+            {
+                <h6 class="alert-danger">@ViewBag.message</h6>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        <form method="post" class="TaskGalleryForm" enctype="multipart/form-data">
+            <div class="col-md-12 TaskGallery">
+                @{ int i = 0;}
+                @foreach (string ResultFile in @Model.ResultFiles)
+                {
+                    <div class="TaskGalleryElement">
+                        <div class="TaskGalleryMedia">
+                            @if (ResultFile.Contains(".mp4") || (ResultFile.Contains(".mov") || ResultFile.Contains(".MOV")))
+                            {
+                                <video class="TaskImage" controls disablePictureInPicture controlsList="nodownload nofullscreen noremoteplayback">
+                                    <source src="/@ResultFile#t0.1" type="video/mp4" />
+                                </video>
+                            }
+                            else
+                            {
+                                if (ResultFile.Contains(".pdf"))
+                                {
+                                    @*<div class="PdfZoom" onclick="ZoomPdf(@i);">+</div>*@
+                                    <iframe id="@i" class="TaskPdf" src="/@ResultFile"></iframe>
+                                    <div class="PdfOpenLink"><a href="/@ResultFile">Открыть файл</a></div>
+                                }
+                                else
+                                {
+                                    <div class="TaskImage" onclick="ZoomPicture(this);" style="background-image: url('/@ResultFile')"></div>
+                                }
+                            }
+                        </div>
+                        @if (Model.Status == "active" || Model.Status == "StopedOnModeration")
+                        {
+                            <a class="TaskGalleryButton" asp-controller="Home" asp-action="DeleteTaskMedia" asp-route-id="@Model.id" asp-route-MediaPath="@ResultFile">
+                                <div class="TaskinputDeleteFileLabel"> Удалить файл</div>
+                            </a>
+                        }
+                    </div>
+                    i++;
+                }
+                @if (Model.Status == "active" || Model.Status == "StopedOnModeration")
+                {
+                    <div class="TaskGalleryElement">
+                        <div class="TaskGalleryMedia">
+                            <div class="TaskAddImageIcon" onclick="TaskImageClick()" style="background-image: url('/Images/AddContactLink_small.png')"></div>
+                        </div>
+                        <label for="file" class="TaskGalleryButton">
+                            <input type="file" class="inputFile" onchange="this.form.submit()" id="file" name="uploadedFile" accept="image/jpeg, image/png, image/gif, video/mp4, video/quicktime, application/pdf" />
+                            Загрузить файл
+                        </label>
+                    </div>
+                }
+
+            </div>
+
+        </form>
+    </div>
+    <br />
+
+    <form method="post" asp-controller="Home" asp-action="SaveUserCommentOnTaskReport" asp-route-id="@Model.id" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-12 d-flex flex-column flex-wrap align-content-center">
+
+                @if (Model.Status == "active")
+                {
+                    <h6>Комментарий о выполнении задания</h6>
+                }
+                <div class="col-md-10">
+                    <textarea rows="2" style="width:100%" name="UserTaskDoneComment" maxlength="400"
+                              placeholder="Опишите проблемы, связанные с выполнением задания, о которых должна знать администрация сайта">@Model.FromUserMessage</textarea>
+                </div>
+                <a>
+                    <input type="submit" class="btn btn-light MyTaskSaveUserCommentButton" value="Сохранить комментарий" />
+                </a>
+            </div>
+        </div>
+    </form>
+}
+<br />
+<div class="row MyTaskBottomPanel">
+    @if (Model.TaskOwner == "other")
+    {
+        @if (Model.Status == "active")
+        {
+            @if (Model.ResultFiles.Count() != 0)
+            {
+                <a asp-controller="Home" asp-action="CompliteTheTask" asp-route-id="@Model.id">
+                    <input type="button" class="btn btn-success MyTaskBottomButton" value="Завершить задание" />
+                </a>
+            }
+            else
+            {
+                <a>
+                    <input type="button" class="btn btn-warning MyTaskBottomButton" value="Добавте фото и/или видео отчёта" />
+                </a>
+            }
+            <input type="button" class="btn btn-danger MyTaskBottomButton" data-toggle="modal" data-target=".RefuseTaskModDialog" value="Отказаться от задания" />
+        }
+        else
+        {
+            @if (Model.Status == "complite_moderation")
+            {
+                <a>
+                    <input type="button" class="btn btn-secondary MyTaskBottomButton" value="Отчёт о выполнении находится на модерации. Ожидайте." />
+                </a>
+            }
+            else
+            {
+                @if (Model.Status == "StopedOnModeration")
+                {
+                    <a asp-controller="Home" asp-action="CompliteTheTask" asp-route-id="@Model.id">
+                        <input type="button" class="btn btn-info MyTaskBottomButton" value="Заново отправить отчёт" />
+                    </a>
+                }
+                else
+                {
+                    <a>
+                        <input type="button" class="btn btn-dark MyTaskBottomButton" value="Задание закрыто" />
+                    </a>
+                }
+            }
+        }
+    }
+    else
+    {
+        @if (Model.GlobalStatus == "in_progress")
+        {
+            <a>
+                <input type="button" class="btn btn-block btn-success MyTaskInfoSingleButton" value="Задание взято волонтёром" />
+            </a>
+        }
+        @if (Model.GlobalStatus == "active")
+        {
+            <a>
+                <input type="button" class="btn btn-block btn-secondary MyTaskInfoSingleButton" value="Задание ожидает исполнителя" />
+            </a>
+        }
+        @if (Model.GlobalStatus == "closed")
+        {
+            <a>
+                <input type="button" class="btn btn-block btn-secondary MyTaskInfoSingleButton" value="Задание закрыто" />
+            </a>
+        }
+        @if (Model.GlobalStatus == "stoped")
+        {
+            <a asp-controller="Home" asp-action="EditHelpPoint" asp-route-id="@Model.id">
+                <input type="button" class="btn btn-warning MyTaskInfoButton" value="Редактировать задание" />
+            </a>
+            <a asp-controller="Home" asp-action="DeleteTask" asp-route-id="@Model.id">
+                <input type="button" class="btn btn-danger MyTaskInfoButton" value="Удалить задание" />
+            </a>
+        }
+    }
+</div>
+
+

@@ -1,0 +1,24 @@
+﻿@{
+   
+}
+<link type="text/css" rel="stylesheet" href="~/css/Privacy.css" />
+<div class="MainPanel">
+    <div class="MainHeader">@ViewData["MainHeader"]</div>
+    <div class="MainHeader"><a asp-controller="Home" asp-action="Policy">ПОЛИТИКА В ОТНОШЕНИИ ОБРАБОТКИ ПЕРСОНАЛЬНЫХ ДАННЫХ</a></div>
+    @foreach (Privacy _ServicesContent in (IEnumerable<Privacy>)ViewData["Text"])
+    {
+        <div class="TextDiv">
+            <div class="TextHeader">@_ServicesContent.header</div>
+            <ul class="TextList">
+
+                @foreach (string ForClientsListContent in @_ServicesContent.text)
+                {
+                    if (ForClientsListContent != "")
+                    {
+                        <li>@ForClientsListContent</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+</div>

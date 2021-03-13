@@ -1,0 +1,40 @@
+﻿@{
+
+}
+<link type="text/css" rel="stylesheet" href="~/css/Privacy.css" />
+<div class="MainPanel">
+    <div class="MainHeader"><a asp-controller="Home" asp-action="Privacy">УСЛОВИЯ ПОЛЬЗОВАНИЯ САЙТОМ</a></div>
+    <div class="MainHeader">@ViewData["MainHeader"]</div>
+    @foreach (Policy _ServicesContent in (IEnumerable<Policy>)ViewData["Text"])
+    {
+        <div class="TextDiv">
+            <div class="TextHeader">@_ServicesContent.header</div>
+            <ul class="TextList">
+                @foreach (List<string> subList in @_ServicesContent.text)
+                {
+                    if (subList.Count() <= 1)
+                    {
+                        <li >@Html.Raw(subList.ElementAt(0))</li>
+                    }
+                    else
+                    {
+                        <li>
+                            @Html.Raw(subList.ElementAt(0))
+                            <ul class="TextSubList">
+                                @{int g = 0;}
+                                @foreach (string ForClientsListContent in subList)
+                                {
+                                    if (g != 0)
+                                    {
+                                        <li>@Html.Raw(ForClientsListContent)</li>
+                                    }
+                                    g++;
+                                }
+                            </ul>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+</div>

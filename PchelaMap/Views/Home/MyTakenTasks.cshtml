@@ -1,0 +1,72 @@
+﻿
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model IEnumerable<PchelaMap.Models.UserWithTasks>
+<link rel="stylesheet" href="~/css/MyTasks.css" />
+<div id="TaskModDialog" class="modal modal-wide fade" role="dialog">
+    <div id="TaskModContent" class="modal-dialog modal-dialog-centered" role="document"></div>
+</div>
+<div class="MyTasksMenuButtonsContainer">
+    <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTakenTasks">
+        <input type="button" class="btn MyTasksMenuButtonActive" value="Взятые (@Model.Count())" />
+    </a>
+    <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyDoneTasks">
+        <input type="button" class="btn MyTasksMenuButton" value="Выполненные (@ViewBag.UserDoneTasksCount)" />
+    </a>
+    <a class="Link_MyTaskMenu" asp-controller="Home" asp-action="MyTasks">
+        <input type="button" class="btn  MyTasksMenuButton" value="Созданные (@ViewBag.UsersTasksCount)" />
+    </a>
+</div>
+
+@if (Model.Count() == 0)
+{
+<h3>Нет взятых заданий</h3>
+}
+else
+{
+@foreach (PchelaMap.Models.UserWithTasks _Task in Model)
+{
+
+<a class="TaskView" asp-controller="Home" asp-action="UserTakenTaskEdit" asp-route-id="@_Task.id" asp-route-ActiveMenuButton="taken">
+    <span class="UserMyTasksAvatar" style="background-image:url(' @_Task.PhotoUrl')"></span>
+    <div class="TaskInfo">
+        <span class="TaskDescriptionMyTasks">@_Task.description</span>
+        <span>@_Task.Adress</span>
+        <span>@_Task.Phone</span>
+        <div class="d-flex flex-row flex-wrap ">
+            @if (_Task.Status == "active")
+            {
+<span class="alert alert-info">Ожидает выполнения</span> }
+else
+{
+if (_Task.Status == "StopedOnModeration")
+{
+<span class="alert alert-danger">Отчёт не прошёл модерацию.</span>
+                            @if (_Task.FromAdminMessage != "" && _Task.FromAdminMessage != null)
+                            {
+<span class="alert alert-info">Сообщение от администратора: @_Task.FromAdminMessage</span>} }
+                        else
+                        {
+<span class="alert alert-info">Выполнено, ожидает модерации</span>}
+}
+            @if (_Task.UrgentStatus == 1)
+            {
+<span class="alert alert-danger">Срочное задание</span>}
+        </div>
+
+    </div>
+    @if (_Task.promo == "")
+    {
+        <input type="button" class="btn SberMyTasksButton" onclick="SberMyTasksDirectLink(event)"/>
+    }
+    else
+    {
+        <input type="button" onclick="SberMyTasksClick(event, '@_Task.id')" class="btn SberMyTasksButton" />
+    }
+
+
+</a>
+}}

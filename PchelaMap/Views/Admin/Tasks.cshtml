@@ -1,0 +1,230 @@
+﻿
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model IEnumerable<PchelaMap.Models.UserWithTasks>
+<link rel="stylesheet" href="~/css/Admin.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/AdminTasks.css" asp-append-version="true" />
+<div id="SearchModDialog" class="modal modal-wide fade" role="dialog">
+    <div id="SearchModContent" class="modal-dialog modal-dialog-centered" role="document"></div>
+</div>
+<input type="button" class="btn SearchButton" onclick="OpenTasksSearchModalClick()" />
+<div class="AdminMainContainer">
+    <partial name="_AdminMenuPartial" />
+    @if (Model.Count() == 0)
+    {
+<h3>@ViewBag.TasksCountMessage</h3> }
+else
+{
+<div class="AdminTableContainer">
+    <table class="UsersDBStyle">
+        <thead class="AdminTableHeader">
+            <tr>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["IndexSort"]">
+                        №
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["DateSort"]">
+                        Дата создания
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["NameSort"]">
+                        Имя нуждающегося
+                    </a>
+
+                </th>
+                <th class="TableHeader">
+                    Контакты
+                </th>
+                <th class="TableHeader">
+                    Адрес
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["HasAutoSort"]">
+                        Авто
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    Описание задания
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["UrgentableSort"]">
+                        Срочность задания
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["UsersTakenSort"]">
+                        Взял
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <a asp-action="Tasks" asp-route-sortOrder="@ViewData["UsersDoneSort"]">
+                        Выполнил
+                    </a>
+                </th>
+                <th class="TableHeader">
+                    <div>
+                        <div>
+                            Статус
+                        </div>
+                        <div>
+                            Редактирование/Удаление
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="AdminTableBody">
+            @foreach (PchelaMap.Models.UserWithTasks _Task in Model)
+            {
+<tr>
+    <td class="TableCellMidleTextalign">
+        @_Task._index
+    </td>
+    <td class="TableCell">
+        @_Task._CreatedDateUtc
+    </td>
+    <td class="TableCell">
+        <a class="ChangeRoleButton" asp-action="Index" asp-route-ShowSingle="true" asp-route-UserId="@_Task.CreatorID">
+            @_Task.Name
+        </a>
+        <div class="UserAvatar" style="background-image:url('@_Task.PhotoUrl');" onclick="ZoomAvatar(this)"></div>
+
+    </td>
+    <td class="TableCell">
+        <div>
+            <div>
+                @_Task.Phone
+            </div>
+            <div>
+                <a style="width:100%" href="mailto: @_Task.Email">@_Task.Email</a>
+            </div>
+        </div>
+    </td>
+    <td class="TableCell">
+        @_Task.Adress
+    </td>
+    <td class="TableCellMidleTextalign">
+        @if (_Task.NeedsCar == 1)
+        {
+<label style="margin:0;">Нужно</label> }
+else
+{
+<label style="margin:0;">Без</label>}
+    </td>
+    <td class="TableCell">
+        <textarea style="width:100%" rows="6" readonly="readonly">@_Task.description</textarea>
+    </td>
+    <td class="TableCellMidleTextalign">
+        @if (_Task.UrgentStatus == 1)
+        {
+<label class="btn btn-danger">Срочное</label> }
+else
+{
+<label class="btn btn-info">Обычное</label>}
+    </td>
+    <td class="TableCellMidleTextalign">
+        <div>
+            <div>
+                @_Task.UserTakenCount
+            </div>
+            @if (_Task.UserTakenCount != 0)
+            {
+<a asp-action="Index" asp-route-ShowGroupByTask="true" asp-route-TaskId="@_Task.id">
+    Посмотреть
+</a>}
+        </div>
+
+    </td>
+    <td class="TableCellMidleTextalign">
+
+        <div>
+            <div>
+                @_Task.UserDoneCount
+            </div>
+            @if (_Task.UserDoneCount != 0)
+            {
+<a asp-action="Index" asp-route-ShowGroupByTask="true" asp-route-ShowDone="true" asp-route-TaskId="@_Task.id">
+    Посмотреть
+</a>}
+        </div>
+    </td>
+    <td class="TableCellMidleTextalign">
+        <div class="dropdown">
+            @if (_Task.GlobalStatus == "closed")
+            {
+<button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" type="button">
+    @GlobalStatusEditModel.GlobalTaskStatusDictionary[_Task.GlobalStatus]
+</button> }
+else
+{
+@if (_Task.GlobalStatus == "active")
+{
+<button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button">
+    @GlobalStatusEditModel.GlobalTaskStatusDictionary[_Task.GlobalStatus]
+</button> }
+else
+{
+@if (_Task.GlobalStatus == "moderating")
+{
+<button class="btn btn-warning dropdown-toggle" data-toggle="dropdown" type="button">
+    @GlobalStatusEditModel.GlobalTaskStatusDictionary[_Task.GlobalStatus]
+</button> }
+else
+{
+@if (_Task.GlobalStatus == "in_progress")
+{
+<button class="btn btn-success dropdown-toggle" data-toggle="dropdown" type="button">
+    @GlobalStatusEditModel.GlobalTaskStatusDictionary[_Task.GlobalStatus]
+</button> }
+else
+{
+<button class="btn btn-dark dropdown-toggle" data-toggle="dropdown" type="button">
+    @GlobalStatusEditModel.GlobalTaskStatusDictionary[_Task.GlobalStatus]
+</button>}}}}
+            <div class="dropdown-menu">
+                @foreach (var _stat in ViewBag.AllGlobalStatuses)
+                {
+                    if (_Task.GlobalStatus != _stat)
+                    {
+<a class="dropdown-item" style="cursor:pointer"
+   onclick="return ChangeGlobalStatus('@_Task.id', '@_Task.CreatorID', '@_stat', '@ViewBag.SelectedTasksOrAll', '@ViewBag.OwnTasksOrTaken', '@_Task.UserTakenID')">
+    @GlobalStatusEditModel.GlobalTaskStatusDictionary[_stat]
+</a>}
+}
+            </div>
+
+        </div>
+        <div>
+            <a asp-action="EditTask" asp-route-id="@_Task.id" asp-route-userId="@_Task.CreatorID" asp-route-SelectedTasksOrAll="@ViewBag.SelectedTasksOrAll" asp-route-OwnTasksOrTaken="@ViewBag.OwnTasksOrTaken" asp-route-UserTakenId="@_Task.UserTakenID">
+                <input type="button" class="DeleteUserButton" value="Редактировать" />
+            </a>
+        </div>
+        <div>
+            <form asp-action="DeleteTask" asp-route-id="@_Task.id" asp-route-userId="@_Task.CreatorID" asp-route-SelectedTasksOrAll="@ViewBag.SelectedTasksOrAll" asp-route-OwnTasksOrTaken="@ViewBag.OwnTasksOrTaken" asp-route-UserTakenId="@_Task.UserTakenID" method="post">
+                <input type="submit" onclick="return confirmDeleteTask();" class="DeleteUserButton" value="Удалить" />
+            </form>
+        </div>
+
+    </td>
+
+</tr>}
+        </tbody>
+
+    </table>
+</div>}
+</div>
+@section csss
+{
+
+}
+@section Scripts{
+
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+
+}

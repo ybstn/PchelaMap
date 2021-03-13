@@ -1,0 +1,124 @@
+﻿@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@inject RoleManager<IdentityRole> _RoleManager
+@model AdminModal
+<link rel="stylesheet" href="~/css/Admin.css" />
+<partial name="_AdminMenuPartial" />
+<partial name="_AdminStatusMessage" model="@Model" />
+<div class="d-flex flex-column flex-wrap align-content-center ExportPanel">
+    <form asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <label class="alert alert-secondary ExportButtons">
+            Экспорт всех пользователей <span id="TR1text">(временной диапазон не задан)</span>:
+        </label>
+        <div class="d-flex flex-row flex-nowrap align-content-center ExportButtonsPanel">
+            <input type="submit" class="btn btn-warning ExportSubButtons" value="Скачать" asp-action="GenerateUsersTable" asp-route-DownloadOrMail="false" />
+
+            <input type="submit" class="btn btn-warning ExportSubButtons" value="Отправить на почту" asp-action="GenerateUsersTable" asp-route-DownloadOrMail="true" />
+
+            <a id="TR1" class="btn btn-info ExportSubButtons" style="color: white;">
+                Задать диапазон дат
+            </a>
+
+
+        </div>
+        <input type="hidden" id="UsersTimeRangeStart" name="UsersTimeRangeStart" value="" />
+        <input type="hidden" id="UsersTimeRangeEnd" name="UsersTimeRangeEnd" value="" />
+    </form>
+    <form asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <label class="alert alert-secondary ExportButtons">
+            Экспорт всех заданий <span id="TR2text">(Диапазон дат не задан)</span>:
+        </label>
+        <div class="d-flex flex-row flex-nowrap align-content-center ExportButtonsPanel">
+            <input type="submit" class="btn btn-warning ExportSubButtons" value="Скачать" asp-action="GenerateTasksTable" asp-route-DownloadOrMail="false" />
+
+            <input type="submit" class="btn btn-warning ExportSubButtons" value="Отправить на почту" asp-action="GenerateTasksTable" asp-route-DownloadOrMail="true" />
+            <a id="TR2" class="btn btn-info ExportSubButtons" style="color: white;">
+                Задать диапазон дат
+            </a>
+        </div>
+        <input type="hidden" id="TasksTimeRangeStart" name="TasksTimeRangeStart" value="" />
+        <input type="hidden" id="TasksTimeRangeEnd" name="TasksTimeRangeEnd" value="" />
+
+        <div>
+            <label class="alert alert-secondary ExportButtonsWithProgress">
+                Объём всех файлов отчётов польователей о заданиях на диске:  @ViewBag.ReportsFilesVolume Мб.
+                <br />
+                Из них файлов, связанных с выполненными заданиями: @ViewBag.DoneTasksReportFilesVolume Мб.
+                <br />
+                Для очистки места, Вы можете скачать все архивы выполненных заданий, а затем удалить все файлы
+            </label>
+            <div class="progress position-relative ExportProgress">
+                @{ string progressClolorStyle = "";}
+                @if (@ViewBag.DoneTasksReportFilesVolume < 500)
+                {
+                    progressClolorStyle = "bg-success";
+                }
+                else
+                {
+                    if (@ViewBag.DoneTasksReportFilesVolume > 2000)
+                    {
+                        progressClolorStyle = "bg-danger";
+                    }
+                    else
+                    {
+                        progressClolorStyle = "bg-warning";
+                    }
+                }
+                @{ decimal percent = Math.Round((ViewBag.DoneTasksReportFilesVolume / 20), 1);
+                    string percentString = percent.ToString("00.0", System.Globalization.CultureInfo.InvariantCulture) + "%";}
+                <div class="progress-bar @progressClolorStyle" style="width:@percentString;" role="progressbar" aria-valuenow="@ViewBag.DoneTasksReportFilesVolume" aria-valuemin="0" aria-valuemax="2000">
+
+                </div>
+                <small class="progress_span">@ViewBag.DoneTasksReportFilesVolume Мб / 2000Мб</small>
+            </div>
+            <div class="d-flex flex-row flex-nowrap align-content-center ExportButtonsPanel">
+
+                <div class="dropup ExportDropMainButton">
+                    <button class="dropdown-toggle btn btn-warning ExportSubButtons" data-toggle="dropdown" type="button">
+                        Скачать файлы выполненных заданий
+                    </button>
+                    <div class="dropdown-menu">
+                        @foreach (string _stat in ViewBag.ZipReportsFiles)
+                        {
+                            string _fileName = new System.IO.FileInfo(_stat).Name;
+                            <input type="submit" class="dropdown-item btn btn-link ExportDropdownButtons" value="@_fileName" asp-action="downloadDoneReports" asp-route-ZipPath="@_stat" />
+                        }
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-danger ExportSubButtons" value="Удалить ВСЕ файлы выполненных заданий" asp-action="DeleteDoneReportFiles" onclick="return confirmDoneReportsFilesDelete();" />
+            </div>
+        </div>
+        <div>
+            <label class="alert alert-secondary ExportButtons">
+                Объём лог файлов почтовых отправлений :  @ViewBag.MailLogsFilesVolume Мб.
+            </label>
+            <div class="d-flex flex-row flex-nowrap align-content-center ExportButtonsPanel">
+                <div class="dropup ExportDropMainButton">
+                    <button class="dropdown-toggle btn btn-warning ExportSubButtons" data-toggle="dropdown" type="button">
+                        Скачать лог файлы почтовых отправлений
+                    </button>
+
+                    <div class="dropdown-menu">
+                        @foreach (string _stat in ViewBag.MailLogsFiles)
+                        {
+                            string _fileName = new System.IO.FileInfo(_stat).Name;
+                            <input type="submit" class="dropdown-item btn btn-link ExportDropdownButtons" value="@_fileName" asp-action="downloadMailLogs" asp-route-fileFullName="@_stat" />
+                        }
+                    </div>
+                </div>
+                <input type="submit" class="btn btn-danger ExportSubButtons" value="Удалить ВСЕ лог файлы почтовых отправлений" asp-action="DeleteMailLogs" onclick="return confirmMailLogsFilesDelete();" />
+            </div>
+        </div>
+    </form>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="~/lib/daterangepicker-master/moment.min.js"></script>
+    <script type="text/javascript" src="~/lib/daterangepicker-master/daterangepicker.js"></script>
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+    <link rel="stylesheet" href="~/lib/daterangepicker-master/daterangepicker.css" />
+    <script type="text/javascript" asp-append-version="true" src="~/js/AdminDatePicker.js"></script>
+}

@@ -1,0 +1,73 @@
+﻿@model TasksSearchModel
+<div class="modal-content">
+    <div class="modal-header" style="align-items: center;">
+        <span class="col-md-10 offset-md-1 modal-title">ПОИСК ЗАДАНИЯ</span>
+        <button type="button" class="close" data-dismiss="modal" area-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form asp-action="_TasksSearch" asp-controller="Admin" method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+            <div class="row SearchFormRow">
+                <div class="col-md-12 my-auto">
+                    <h6 class="SearchFormLabel">Введите значение в любое из полей для поиска.</h6>
+                </div>
+            </div>
+            <div class="row SearchFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="SearchFormLabel" asp-for="@Model.description">ОПИСАНИЕ:</span>
+                </div>
+                <div class="col-md-7">
+                    <input id="TaskDescription" asp-for="@Model.description" class="form-control" />
+                </div>
+            </div>
+            <div class="row SearchFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="SearchFormLabel" asp-for="@Model.name">ИМЯ:</span>
+                </div>
+                <div class="col-md-7">
+                    <input id="UserName" asp-for="@Model.name" class="form-control" />
+                </div>
+            </div>
+            <div class="row SearchFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="SearchFormLabel" asp-for="@Model.phone">НОМЕР ТЕЛЕФОНА:</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" id="UserPhoneNumber" asp-for="@Model.phone" class="form-control" />
+                </div>
+            </div>
+            <div class="row SearchFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="SearchFormLabel" asp-for="@Model.mail">ЭЛЕКТРОННАЯ ПОЧТА:</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" id="UserMail" asp-for="@Model.mail" class="form-control" />
+                </div>
+            </div>
+
+            <div class="row SearchFormRow">
+                <div class="col-md-5 my-auto">
+                    <span class="SearchFormLabel" style="padding:0.5vh 0;">АДРЕС:</span>
+                </div>
+                <div class="col-md-7">
+                    <input type="text" id="UserAdress" asp-for="@Model.adress" class="form-control UserAdress" />
+                </div>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <input type="submit" class="btn btn-primary btn-block ChangeRoleButton" value="ИСКАТЬ"
+                   onclick="javascript: return TasksSearchConfirm()" />
+        </div>
+    </form>
+</div>
+@section Scripts{
+
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+

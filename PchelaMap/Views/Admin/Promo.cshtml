@@ -1,0 +1,155 @@
+﻿
+@using PchelaMap.Models
+@using Microsoft.AspNetCore.Identity
+@using PchelaMap.Areas.Identity.Data
+@inject SignInManager<PchelaMapUser> SignInManager
+@inject UserManager<PchelaMapUser> UserManager
+@model List<Promo> 
+<link rel="stylesheet" href="~/css/Admin.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/css/AdminPromo.css" asp-append-version="true" />
+
+<div class="AdminMainContainer">
+    <partial name="_AdminMenuPartial" />
+ 
+        <div class="AdminTableContainer">
+            <table class="UsersDBStyle">
+                <thead class="AdminTableHeader">
+                    <tr>
+                        <th colspan="7" style="border: none;" class="TableHeader">
+                            <form method="post" class="TaskGalleryForm" enctype="multipart/form-data">
+                                <label for="file" class="TaskGalleryButton">
+                                    <input type="file" class="inputFile" onchange="this.form.submit()" id="file" name="_csvFile" accept=".csv" />
+                                    Загрузить таблицу с кодами. Файл должен быть в формате .csv, содержать один столбец со списком промокодов и с заголовком (первая строка) "code".
+                                </label>
+                            </form>
+                        </th>
+
+                    </tr>
+                    <tr>
+                        <th class="TableHeader">
+                            <a asp-action="Promo" asp-route-sortOrder="@ViewData["IndexSort"]">
+                                №
+                            </a>
+                        </th>
+                        <th class="TableHeader">
+                            Код
+                        </th>
+                        <th class="TableHeader" colspan="2">
+                            Пользователь
+                        </th>
+                        <th class="TableHeader">
+                            Задание
+                        </th>
+                        <th class="TableHeader">
+                            <a asp-action="Promo" asp-route-sortOrder="@ViewData["StatusSort"]">
+                                Статус
+                            </a>
+                        </th>
+                        <th class="TableHeader">
+                            Удалить
+
+                        </th>
+                    </tr>
+
+                    @if (Model.Count() == 0)
+                    {
+                        <tr>
+                            <td colspan="7" class="TableHeader">
+                                <h3>@ViewBag.TasksCountMessage</h3>
+                            </td>
+                        </tr>
+                    }
+                </thead>
+                <tbody class="AdminTableBody">
+
+                    @if (Model.Count() != 0)
+                    {
+                        @foreach (Promo _promo in Model)
+                        {
+                            <tr>
+                                <td class="TableCellMidleTextalign">
+                                    @_promo.indx
+                                </td>
+                                <td class="TableCellMidleTextalign">
+                                    @_promo.code
+                                </td>
+                                <td class="TableCell" style="border-right:none; padding-right:0.5vw;">
+                                    <div class="UserAvatar" style="background-image: url('@_promo.userPhoto');" onclick="ZoomAvatar(this)"></div>
+                                </td>
+                                <td class="TableCell" style="border-left:none; padding-left:0;">
+                                    <a class="ChangeRoleButton" asp-action="Index" asp-route-ShowSingle="true" asp-route-UserId="@_promo.userId">
+                                        @_promo.userName
+                                    </a>
+                                </td>
+                                <td class="TableCell">
+                                    <textarea style="width:100%" rows="2" readonly="readonly">@_promo.taskInfo</textarea>
+                                    <a class="ChangeRoleButton" asp-action="ShowTaskFromTaskReport" asp-route-id="@_promo.taskId">
+                                        ПОСМОТРЕТЬ
+                                    </a>
+                                </td>
+                                <td class="TableCellMidleTextalign">
+                                    <div class="dropdown">
+                                        @if (_promo.status == 0)
+                                        {
+                                            <button class="btn btn-success dropdown-toggle" data-toggle="dropdown" type="button">
+                                                @Promo.PromoDict[0]
+                                            </button> }
+                                        else
+                                        {
+                                            @if (_promo.status == 2)
+                                            {
+                                                <button class="btn btn-danger dropdown-toggle" data-toggle="dropdown" type="button">
+                                                    @Promo.PromoDict[2]
+                                                </button>}
+                                            else
+                                            {
+                                                <button class="btn btn-info dropdown-toggle" data-toggle="dropdown" type="button">
+                                                    @Promo.PromoDict[1]
+                                                </button>
+                                            }
+
+
+                                        }
+                                        <div class="dropdown-menu">
+                                            @for (int i = 0; i < 3; i++)
+                                            {
+                                                if (_promo.status != i)
+                                                {
+                                                    <a class="dropdown-item" style="cursor:pointer"
+                                                       onclick="return ChangePromoStatus('@_promo.code', '@i')">
+                                                        @Promo.PromoDict[i]
+                                                    </a>
+                                                }
+
+                                            }
+                                        </div>
+
+                                    </div>
+                                </td>
+                                <td class="TableCellMidleTextalign">
+                                    <div>
+                                        <form asp-action="DeletePromoCode" asp-route-code="@_promo.code" method="post">
+                                            <input type="submit" onclick="return confirmPromoDelete();" class="DeleteUserButton" value="Удалить" />
+                                        </form>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+</div>
+@section csss
+{
+
+}
+@section Scripts{
+
+    <script type="text/javascript" src="~/js/Admin.js"></script>
+
+}

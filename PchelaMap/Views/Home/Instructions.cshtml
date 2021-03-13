@@ -1,0 +1,35 @@
+﻿@{
+}
+<link type="text/css" rel="stylesheet" href="~/css/Instructions.css" />
+<div class="MainPanel">
+    <div class="MainHeader">@ViewData["MainHeader"]</div>
+    @foreach (Privacy _ServicesContent in (IEnumerable<Privacy>)ViewData["Text"])
+    {
+    <div class="TextDiv">
+        <div class="TextHeader">@Html.Raw(_ServicesContent.header)</div>
+        @foreach (string ForClientsListContent in @_ServicesContent.text)
+        {
+            if (ForClientsListContent != "")
+            {
+                <div>@Html.Raw(ForClientsListContent)</div>
+            }
+        }
+
+        @foreach (string ForClientsListContent in @_ServicesContent.alert)
+        {
+            if (ForClientsListContent != "")
+            {
+            <div class="SubDisclaimer">
+                <div class="DisclaimerPart">@Html.Raw(ForClientsListContent)</div>
+            </div>
+            }
+        }
+    </div>
+    }
+    <div class="Disclaimer">
+        @foreach (string textPart in (IEnumerable<string>)@ViewData["Disclaimer"])
+        {
+            <div class="DisclaimerPart">@Html.Raw(textPart)</div>
+        }
+    </div>
+</div>
